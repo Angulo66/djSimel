@@ -10,7 +10,7 @@ from .models import (
     Instituto, Materia, MateriasDelAlumno,
     ServicioEscolar, Academia, MateriaSolicitada,
     Status, Solicitud, Movimiento, Jefatura,
-    Coordinador
+    Coordinador, Aduedo
     )
 
 admin.site.register(Usuario)
@@ -31,6 +31,7 @@ admin.site.register(MateriaSolicitada)
 admin.site.register(Solicitud)
 admin.site.register(Movimiento)
 admin.site.register(Status)
+admin.site.register(Aduedo)
 
 admin.site.register(Instituto)
 

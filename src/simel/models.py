@@ -10,7 +10,8 @@ class Usuario(models.Model):
     userName = models.CharField(("user"), max_length=50)
     password = models.CharField(("password"), max_length=50)
     tipoUsuario = models.IntegerField(("tipo de usuario"))
-
+    is_active = models.BooleanField(("es usaurio activo"), default=True)
+        
     def __str__(self):
         return self.userName
 
@@ -71,8 +72,13 @@ class Aduedo(models.Model):
     cantMov = models.IntegerField(("cantidad de movilidades curados"))
     cursoVerano = models.BinaryField((""))
     coment = models.CharField(("commentario"), max_length=320)
+    matRC = models.IntegerField(("materias cursadando en RC"))
+    eligible = models.BooleanField(("Es eligible"), default=True)
 
     def is_eligable(self):
+        if( self.matRC >= 2):
+            self.coment += ('El alumno debe {}'.format(self.matRC))
+            self.eligible = 
         if( self.creditosAcum < 150):
             self.coment += ' El alumno no cumple con los suficientes creditos' 
         if( self.cantMov >= 3):
@@ -81,7 +87,7 @@ class Aduedo(models.Model):
             self.coment += ' El alumno tiene adeudos'
         if( self.cursoVerano == 1):
             self.coment = 'Curso de verano'        
-        return self.coment    
+        return self.eligible 
 
 class Materia(models.Model):
     materia = models.CharField(("materia"), max_length=50)
