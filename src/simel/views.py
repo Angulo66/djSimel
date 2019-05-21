@@ -1,19 +1,28 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 from django.http import HttpResponse
+from .models import Instituto
+from .forms import LoginForm
 
-def login(request):
-    return render(request, 'login.html')
-    
+def simel(request):
+    return render(request, 'registration/login.html')
+
 def escolares(request):
-    return HttpResponse("Escolares")
+    return render(request, 'escolar.html')
 
 def alumno(request):
-    return HttpResponse("alumno")
+    return render(request, 'alumno.html')
+
+def solicitud(request):
+    return render(request, 'solicitud.html')
 
 def coordinacion(request):
-    return HttpResponse("coordinacion")
+    return render(request, 'coordinacion.html')
 
 def jefatura(request):
-    return HttpResponse("jefatura")    
+    return render(request, 'jefatura.html')
+
+def solicitudes(request):
+    return render(request, 'solicitudes.html')
