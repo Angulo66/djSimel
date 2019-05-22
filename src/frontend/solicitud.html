@@ -32,11 +32,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="./alumno">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'alumno' %}">
                 <div class="sidebar-brand-icon rotate-n-15">
                 </div>
                 {% if user.is_authenticated %}
-                <div class="sidebar-brand-text mx-3">{{ user.username }}<sup></sup></div>
+                <div class="sidebar-brand-text mx-3">{{ user.first_name }}<sup></sup></div>
                 {% endif %}
             </a>
 
@@ -143,7 +143,7 @@
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/user.png" alt="">
+                                        <img class="rounded-circle" src="{% static 'simel/img/user.png' %}" alt="">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div>
@@ -161,8 +161,8 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.username }}</span>
-                                <img class="img-profile rounded-circle" src="img/user.png">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }}</span>
+                                <img class="img-profile rounded-circle" src="{% static 'simel/img/user.png' %}">
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -181,28 +181,25 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid col-md-8">
-
-
-
-                    <form>
+                    <!--
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                                {{ message }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}    
+                    -->
+                    <form method="POST" action=""> {% csrf_token %}
                         <h4>Datos Personales</h4>
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label for="input">Instituto</label>
-                                <input type="text" class="form-control" id="inputNombre" placeholder="Instituto">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="inputApellido1">Primer Apellido</label>
-                                <input type="text" class="form-control" id="inputApellido1"
-                                    placeholder="Primer Apellido">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="inputApellido2">Segundo Apellido</label>
-                                <input type="text" class="form-control" id="inputApellido2"
-                                    placeholder="Segundo Apellido">
+                                {{ form.as_p }}
+                                <input type="submit" value="create post"/>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Sign in</button>
                     </form>
 
                     <!-- Content Row -->
@@ -253,7 +250,7 @@
                 <div class="modal-body">Asegurese de haber guardado cambios hecho antes de cerrar su session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="./">Cerrar Session</a>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Session</a>
                 </div>
             </div>
         </div>

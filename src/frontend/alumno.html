@@ -36,7 +36,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
         </div>
         {% if user.is_authenticated %}
-        <div class="sidebar-brand-text mx-3">{{ user.username }}<sup></sup></div>
+        <div class="sidebar-brand-text mx-3">{{ user.first_name }}<sup></sup></div>
         {% endif %}
       </a>
 
@@ -137,7 +137,7 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.username }}</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }}</span>
                 <img class="img-profile rounded-circle" src="img/user.png">
               </a>
 
@@ -159,7 +159,7 @@
 
           {% if user.is_authenticated %}
 
-          <h1>Bienvenido {{ user.username }} Al Sistema de Movilidad</h1>
+          <h1>Bienvenido {{ user.first_name }} Al Sistema de Movilidad</h1>
 
           {% else %}
 

@@ -16,30 +16,31 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+  <link rel="stylesheet" href="{% static 'simel/css/login.css' %}">
 
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-      }
-    }
-  </style>
   <!-- Custom styles for this template -->
   <link href="{% static 'simel/css/floating-labels.css' %}" rel="stylesheet">
 
 </head>
 
 <body>
-  <form class="form-signin" method="post" action="{% url 'alumno' %}"> 
+
+  {% if form.errors %}
+    <script>
+      alert("El nombre de usuario o contraseña no son correctos!")
+      location.reload
+    </script>
+  {% endif %}
+
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>Su usuario no tiene privilegios de entrar a este sitio.</p>
+    {% else %}
+      <p>Porfavor inicie session para ver esta pagina.</p>
+    {% endif %}
+  {% endif %}
+
+  <form class="form-signin" method="post"  action="{% url 'login' %}"> 
     <div class="text-center mb-4">
       <img class="mb-4" src="" alt="" width="72" height="72">
       <h1 class="h3 mb-3 font-weight-normal"><strong>S</strong>istema <strong>I</strong>ntegral de
@@ -51,8 +52,9 @@
     {% csrf_token %}
     {{ form.as_p }}
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
-    
+    <button class="btn-primary" type="submit" value="login">Ingresar</button>
+    <input type="hidden" name="text" value="{{ next }}"/>
+    <p><a href="{% url 'password_reset' %}">Olvido su contrase&ntilde;a</a></p>
     <p class="mt-5 mb-3 text-muted text-center"> Equipo Movilidad Eduardo, Francisco, & Helder - IS</p>
   </form>
 </body>

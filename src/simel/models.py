@@ -196,9 +196,9 @@ class Solicitud(models.Model):
     coment = models.CharField(("comentario"), max_length=320)
     idInstituto = models.ForeignKey(Instituto, verbose_name=("instituto"), on_delete=models.CASCADE)
     numeroControl = models.ForeignKey(Alumno, verbose_name=("numero de control"), on_delete=models.CASCADE)
-    idStatus = models.ForeignKey(Status, verbose_name=("status"), on_delete=models.CASCADE)
-    idServicio = models.ForeignKey(ServicioEscolar, verbose_name=("id servicio escolar"), on_delete=models.CASCADE)
-    idAcademia = models.ForeignKey(Academia, verbose_name=("id academia"), on_delete=models.CASCADE)
+    idStatus = models.ForeignKey(Status, verbose_name=("status"), on_delete=models.CASCADE, default=1, editable=False)
+    idServicio = models.ForeignKey(ServicioEscolar, verbose_name=("id servicio escolar"), on_delete=models.CASCADE, default=1, editable=1)
+    idAcademia = models.ForeignKey(Academia, verbose_name=("id academia"), on_delete=models.CASCADE, default=1, editable=False)
 
     def __str__(self):
         return self.coment 

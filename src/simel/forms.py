@@ -1,6 +1,11 @@
 from django import forms
 from .models import Solicitud
+from django.forms import ModelForm
 
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=320)
-    password = forms.CharField(required=True)
+class SolicitudForm(forms.ModelForm):
+    class Meta:
+        model = Solicitud
+        fields = [
+            "idInstituto",
+            "numeroControl"
+        ]      
