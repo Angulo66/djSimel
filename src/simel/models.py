@@ -54,46 +54,10 @@ class Instituto(models.Model):
         return self.instituto      
 
 
-class Carrera(models.Model):
-    nombre = models.CharField(("carrera"), max_length=50)
-    especialidad = models.CharField(("especialidad"), max_length=50, default='')
-    idInstituto = models.ForeignKey(Instituto, verbose_name=("id instituto"), on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.nombre
-
-    def get_esp(self):
-        esp = ''
-        if(self.especialidad != ''):
-            esp = self.especialidad
-
-        return esp        
 
 
-class Alumno(models.Model):
-    numControl = models.IntegerField(("numero de control"))
-    nombre = models.CharField(("nombre"), max_length=50)
-    apellido = models.CharField(("apellido"), max_length=50)
-    idCarrera = models.ForeignKey(Carrera, verbose_name=("carrera"), on_delete=models.CASCADE)
-    idPlan = models.ForeignKey(Plan, verbose_name=("plan"), on_delete=models.CASCADE)
-    promedio = models.DecimalField(("promedio"), max_digits=5, decimal_places=2)
-    semestre = models.IntegerField(("semestre"))
-    idUsuario = models.ForeignKey(User, verbose_name=("nombre de usuario"), on_delete=models.CASCADE)
 
 
-    def __str__(self):
-        return self.nombre
-
-
-class Aduedo(models.Model):
-    numControl = models.ForeignKey(Alumno, verbose_name=("Alumno"), on_delete=models.CASCADE)
-    creditosAcum = models.IntegerField(("creditos acumulados"))
-    adeudo = models.BinaryField(("aduedo de libro"), default=0)
-    cantMov = models.IntegerField(("cantidad de movilidades cursados"))
-    cursoVerano = models.BinaryField(("curso de verano"))
-    coment = models.CharField(("commentario"), max_length=320)
-    matRC = models.IntegerField(("materias cursadando en RC"), default=0)
-    eligible = models.BooleanField(("Es eligible"), default=False)
 
 """
     def is_eligable(self):
@@ -121,6 +85,69 @@ class Aduedo(models.Model):
             return "No es eligible"   
 """
 
+
+class Jefatura(models.Model):
+    nombre = models.CharField(("nombre"), max_length=50)
+    apellido = models.CharField(("apellido"), max_length=50)
+    idUsuario = models.ForeignKey(User, verbose_name=("id usuario"), on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre + '' + self.apellido
+
+
+class Coordinador(models.Model):
+    nombre = models.CharField(("nombre"), max_length=50)
+    apellido = models.CharField(("apellido"), max_length=50)
+    idJefatura = models.ForeignKey(Jefatura, verbose_name=("id jefatura"), on_delete=models.CASCADE)
+    idUsuario = models.ForeignKey(User, verbose_name=("id usuario"), on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre + ' ' + self.apellido 
+
+
+class Carrera(models.Model):
+    nombre = models.CharField(("carrera"), max_length=50)
+    especialidad = models.CharField(("especialidad"), max_length=50, default='')
+    idCoordinador = models.ForeignKey(Coordinador, verbose_name="id coordinador", on_delete=models.CASCADE)
+    idInstituto = models.ForeignKey(Instituto, verbose_name=("id instituto"), on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre
+
+    def get_esp(self):
+        esp = ''
+        if(self.especialidad != ''):
+            esp = self.especialidad
+
+        return esp
+
+
+class Alumno(models.Model):
+    numControl = models.IntegerField(("numero de control"))
+    nombre = models.CharField(("nombre"), max_length=50)
+    apellido = models.CharField(("apellido"), max_length=50)
+    idCarrera = models.ForeignKey(Carrera, verbose_name=("carrera"), on_delete=models.CASCADE)
+    idPlan = models.ForeignKey(Plan, verbose_name=("plan"), on_delete=models.CASCADE)
+    promedio = models.DecimalField(("promedio"), max_digits=5, decimal_places=2)
+    semestre = models.IntegerField(("semestre"))
+    idUsuario = models.ForeignKey(User, verbose_name=("nombre de usuario"), on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return '{}'.format(self.numControl)
+
+
+class Aduedo(models.Model):
+    numControl = models.ForeignKey(Alumno, verbose_name=("Alumno"), on_delete=models.CASCADE)
+    creditosAcum = models.IntegerField(("creditos acumulados"))
+    adeudo = models.BinaryField(("aduedo de libro"), default=0)
+    cantMov = models.IntegerField(("cantidad de movilidades cursados"))
+    cursoVerano = models.BinaryField(("curso de verano"))
+    coment = models.CharField(("commentario"), max_length=320)
+    matRC = models.IntegerField(("materias cursadando en RC"), default=0)
+    eligible = models.BooleanField(("Es eligible"), default=False)
+
+
 class Materia(models.Model):
     materia = models.CharField(("materia"), max_length=50)
     creditos = models.IntegerField(("creditos"))
@@ -137,29 +164,6 @@ class MateriasDelAlumno(models.Model):
     idInstituto = models.ForeignKey(Instituto, verbose_name=("instituto"), on_delete=models.CASCADE)
     idCarrera = models.ForeignKey(Carrera, verbose_name=("carrera"), on_delete=models.CASCADE)
     calif = models.DecimalField(("calificacion"), max_digits=5, decimal_places=2)
-
-
-class Jefatura(models.Model):
-    nombre = models.CharField(("nombre"), max_length=50)
-    apellido = models.CharField(("apellido"), max_length=50)
-    idUsuario = models.ForeignKey(User, verbose_name=("id usuario"), on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.nombre + '' + self.apellido
-
-
-class Coordinador(models.Model):
-    nombre = models.CharField(("nombre"), max_length=50)
-    apellido = models.CharField(("apellido"), max_length=50)
-    idCarrera = models.ForeignKey(Carrera, verbose_name=("id carrera"), on_delete=models.CASCADE)
-    idJefatura = models.ForeignKey(Jefatura, verbose_name=("id jefatura"), on_delete=models.CASCADE)
-    idUsuario = models.ForeignKey(User, verbose_name=("id usuario"), on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.nombre + ' ' + self.apellido
-
-    def get_carrera(self):
-        return self.idCarrera  
 
 
 class ServicioEscolar(models.Model):
@@ -196,13 +200,12 @@ class Solicitud(models.Model):
     coment = models.CharField(("comentario"), max_length=320)
     idInstituto = models.ForeignKey(Instituto, verbose_name=("instituto"), on_delete=models.CASCADE)
     numeroControl = models.ForeignKey(Alumno, verbose_name=("numero de control"), on_delete=models.CASCADE)
-    idStatus = models.ForeignKey(Status, verbose_name=("status"), on_delete=models.CASCADE, default=1, editable=False)
-    idServicio = models.ForeignKey(ServicioEscolar, verbose_name=("id servicio escolar"), on_delete=models.CASCADE, default=1, editable=1)
-    idAcademia = models.ForeignKey(Academia, verbose_name=("id academia"), on_delete=models.CASCADE, default=1, editable=False)
+    idStatus = models.ForeignKey(Status, verbose_name=("status"), on_delete=models.CASCADE)
+    idServicio = models.ForeignKey(ServicioEscolar, verbose_name=("id servicio escolar"), on_delete=models.CASCADE)
+    idAcademia = models.ForeignKey(Academia, verbose_name=("id academia"), on_delete=models.CASCADE)
 
     def __str__(self):
         return self.coment 
-
 
 
 class Movimiento(models.Model):

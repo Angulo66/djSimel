@@ -23,18 +23,18 @@ def get_template(request):
 """
 
 
-def escolares(request):
-    if request.user.is_authenticated():
-        template = 'escolares.html'
-    else:
-        template = 'register/login.html'
-
-    return render(request, template)
-
-
-def alumno(request):
-    print("request:", request)
-    return render(request, 'alumno.html')
+def tablero(request):
+    solicitudes = Solicitud.objects.all().count()
+    solPend = Solicitud.objects.filter(idStatus=2).count()
+    solRech = Solicitud.objects.filter(idStatus=4).count()
+    solFin = Solicitud.objects.filter(idStatus=5).count()
+    context = {
+        "solicitudes": solicitudes,
+        "pendientes": solPend,
+        "rechazados": solRech,
+        "finalizados": solFin
+    }
+    return render(request, 'base.html', context)
 
 
 def solicitud(request):
@@ -51,6 +51,7 @@ def solicitud(request):
     template = 'solicitud.html'
     return render(request, template, context)
 
+
 def solicitud_detail(request, id=None):
     instance = get_object_or_404(Solicitud, id=id)
     context = {
@@ -58,23 +59,6 @@ def solicitud_detail(request, id=None):
         "instance": instance 
     }
     return render(request, '', context)
-
-def coordinacion(request):
-    if request.user.is_authenticated():
-        template = 'coordinacion.html'
-    else:
-        template = 'register/login.html'
-
-    return render(request, template)
-
-
-def jefatura(request):
-    if request.user.is_authenticated():
-        template = 'jefatura.html'
-    else:
-        template = 'register/login.html'
-
-    return render(request, template)
 
 
 def solicitudes(request):
