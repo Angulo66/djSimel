@@ -29,9 +29,14 @@ def tablero(request):
     solRech = Solicitud.objects.filter(idStatus=4).count()
     solFin = Solicitud.objects.filter(idStatus=5).count()
 
-    sisCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.id=1")
+    sisCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Sistemas\'")
     ticsCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.id=2")
-    bioCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.id=3")
+    bioCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Bioquimica\'")
+    eleCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Electronica\'")
+    elcCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Electrica\'")
+    indCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Industrial\'")
+    mecCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Mecanica\'")
+    mechCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Mecatronica\'")
 
 
     context = {
@@ -39,9 +44,10 @@ def tablero(request):
         "pendientes": solPend,
         "rechazados": solRech,
         "finalizados": solFin,
-        "contS": sisCont,
-        "contT": ticsCont,
-        "contB": bioCont
+        "contS": sisCont, "contEl": elcCont,
+        "contT": ticsCont, "contI": indCont,
+        "contB": bioCont, "contM": mecCont,
+        "contE": eleCont, "contMc": mechCont
     }
     return render(request, 'base.html', context)
 
