@@ -67,17 +67,12 @@ def tablero(request):
 
 
 def solicitud(request):
-    form = SolicitudForm(request.POST or None)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
-        messages.success(request, "Solicitud Enviada!")
-    else:
-        messages.error(request, "Error en enviar Solicitud!")    
-    context = {
-        "form": form
-    }
+    datos_personales = Solicitud.objects.raw("SELECT 1 as id, a.numcontrol as numcontrol ,a.nombre ||' '||a.apellido as nombre,sc.nombre as carrera, sc.especialidad as esp ,a.semestre FROM simel_alumno a inner join auth_user au on a.idusuario_id=au.id  inner join  simel_carrera sc on sc.id=a.idcarrera_id WHERE au.username={}".format(request.user.username))
     template = 'solicitud.html'
+    context = {
+        "titulo": "Datos Personales",
+        "datos": datos_personales
+    }
     return render(request, template, context)
 
 
@@ -85,7 +80,7 @@ def solicitud_detail(request, id=None):
     instance = get_object_or_404(Solicitud, id=id)
     context = {
         "title": instance.numControl,
-        "instance": instance 
+        "instance": instance
     }
     return render(request, '', context)
 

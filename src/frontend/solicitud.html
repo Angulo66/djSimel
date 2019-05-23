@@ -185,28 +185,41 @@
 
                 </nav>
                 <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
+                {% if user.is_authenticated %}
+                <!-- Form Content -->
                 <div class="container-fluid col-md-8">
                     <form method="POST" action=""> {% csrf_token %}
                         <div class="form-row">
-                            <h4>Datos Personales</h4>
+                            <h4>{{ titulo }}</h4>
+                            {% for a in datos %}
                             <div class="form-row">
                                 <div class="form-group col-md-4">
-                                    <label for="inputNumeroDeControl">Numero De Control</label>
+                                    <label for="inputNumeroDeControl">Numero de Control</label>
                                     <input type="text" class="form-control" id="inputNumeroDeControl"
-                                        placeholder="#De Control" disabled>
+                                        placeholder="{{ a.numcontrol }}" disabled>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputNombre">Nombre</label>
-                                    <input type="text" class="form-control" id="inputNombre" placeholder="Agrega Nombre"
-                                        disabled>
+                                    <input type="text" class="form-control" id="inputNombre"
+                                        placeholder="{{ a.nombre }}" disabled>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputSemestre">Semestre</label>
-                                    <input type="text" class="form-control" id="inputSemestre" placeholder="#" disabled>
+                                    <input type="text" class="form-control" id="inputSemestre"
+                                        placeholder="{{ a.semestre }}" disabled>
                                 </div>
+                                <div class="form-group col-md-4">
+                                    <label for="inputSemestre">Carrera</label>
+                                    <input type="text" class="form-control" id="inputSemestre"
+                                        placeholder="{{ a.carrera }}" disabled>
+                                </div>
+                                <div class="form-group col-md-4">
+                                        <label for="inputSemestre">Especialidad</label>
+                                        <input type="text" class="form-control" id="inputSemestre"
+                                            placeholder="{{ a.esp }}" disabled>
+                                    </div>
                             </div>
+                            {% endfor %}
                             <div class="row">
                                 <div class="form-group col-md-3">
                                     <label for="inputPais">PAIS</label>
@@ -281,6 +294,7 @@
                     </div>
 
                 </div>
+                {% endif %}
                 <!-- /.container-fluid -->
 
             </div>
