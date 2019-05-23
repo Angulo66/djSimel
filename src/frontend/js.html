@@ -1,5 +1,6 @@
 {% load static %}
-{% if user.is_authenticated %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -183,74 +184,14 @@
         </nav>
         <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-          <!-- tabla de solicitudes -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Solicitudes de Movilidad</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
 
-                    <tr>
-                      <th>Numero de Control</th>
-                      <th>Nombre</th>
-                      <th>Carrera</th>
-                      <th>Convocatoria</th>
-                      <th>Fecha de Solicitud</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Numero de Control</th>
-                      <th>Nombre</th>
-                      <th>Carrera</th>
-                      <th>Convocatoria</th>
-                      <th>Fecha de Solicitud</th>
-                      <th>Status</th>
-                    </tr>
-                  </tfoot>
-                  {% if user.is_superuser %}
-                  <tbody>
-                    {% for t in solicitud %}
-                    <tr>
-                      <td>{{ t.numControl }}</td>
-                      <td>{{ t.nombre }}</td>
-                      <td>{{ t.nomcarrera }}</td>
-                      <td>{{ t.instituto }}</td>
-                      <td>{{ t.fechaSolic }}</td>
-                      <td>{{ t.descStat }}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                  {% endif %}
+{% block content %}
 
-                  {% if user.is_staff %}
-                  <tbody>
-                    {% for t in coordS %}
-                    <tr>
-                      <td>{{ t.numControl }}</td>
-                      <td>{{ t.alumno }}</td>
-                      <td>{{ t.carrera }}</td>
-                      <td>{{ t.instituto }}</td>
-                      <td>{{ t.fechaSolic }}</td>
-                      <td>{{ t.status }}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                  {% endif %}
 
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
 
-      </div>
+{% endblock content %}
+
+</div>
 
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
@@ -285,11 +226,12 @@
         <div class="modal-body">Asegurese de haber guardado cambios hecho antes de cerrar su session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="./logout">Cerrar Session</a>
+          <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Session</a>
         </div>
       </div>
     </div>
   </div>
+
 
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'simel/vendor/jquery/jquery.min.js' %}"></script>
@@ -299,16 +241,11 @@
   <script src="{% static 'simel/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="{% static 'simel/js/sb-admin-2.min.js' %}"></script>
+  <script src="{% static 'simel/js/simel.min.js' %}"></script>
 
   <!-- Page level plugins -->
-  <script src="{% static 'simel/vendor/datatables/jquery.dataTables.min.js' %}"></script>
-  <script src="{% static 'simel/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'simel/vendor/chart.js/Chart.min.js' %}"></script>
 
   <!-- Page level custom scripts -->
-  <script src="{% static 'simel/js/demo/datatables-demo.js' %}"></script>
-
-</body>
-
-</html>
-{% endif %}
+  <script src="{% static 'simel/js/demo/chart-area-demo.js' %}"></script>
+  <script src="{% static 'simel/js/demo/chart-pie-demo.js' %}"></script>

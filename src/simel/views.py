@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect, reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
@@ -37,6 +37,9 @@ def tablero(request):
     indCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Industrial\'")
     mecCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Mecanica\'")
     mechCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Mecatronica\'")
+    eneCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Energias Renovables\'")
+    ambCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Ambiental\'")
+    empCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Gestion Empreserial\'")
 
 
     context = {
@@ -44,9 +47,9 @@ def tablero(request):
         "pendientes": solPend,
         "rechazados": solRech,
         "finalizados": solFin,
-        "contS": sisCont, "contEl": elcCont,
-        "contT": ticsCont, "contI": indCont,
-        "contB": bioCont, "contM": mecCont,
+        "contS": sisCont, "contEl": elcCont, "contEr": eneCont,
+        "contT": ticsCont, "contI": indCont, "contA": ambCont,
+        "contB": bioCont, "contM": mecCont, "contEm": empCont,
         "contE": eleCont, "contMc": mechCont
     }
     return render(request, 'base.html', context)
@@ -78,8 +81,10 @@ def solicitud_detail(request, id=None):
 
 def solicitudes(request):
     solicitud = Solicitud.objects.raw("Select a.*,c.nombre as nomcarrera,i.instituto,ss.fechasolic,st.descstat from simel_solicitud ss inner join simel_alumno a on ss.numerocontrol_id=a.id inner join simel_carrera c on c.id=a.idcarrera_id inner join simel_status st on ss.idstatus_id=st.id inner join simel_instituto i on i.id=ss.idinstituto_id")
+    solcoord = Solicitud.objects.raw("SELECT 1 as id, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id WHERE sc.nombre='{}'".format(request.user.first_name))
     context = {
-        "solicitud": solicitud
+        "solicitud": solicitud,
+        "coordS": solcoord
     }
     template = 'solicitudes.html'
     return render(request, template, context)
