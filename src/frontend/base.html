@@ -41,27 +41,62 @@
       </a>
 
       <!-- Jefatura -->
-      {% if user.is_superuser %}
+      {% if user.is_superuser or user.is_staff %}
+
+      <li class="nav-item active">
+          <a class="nav-link" href="">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tablero</span></a>
+        </li>
+
       <li class="nav-item">
         <a class="nav-link" href="{% url 'solicitudes' %}">
           <i class="fas fa-fw fa-table"></i>
           <span>Solicitudes</span></a>
       </li>
-      <!-- Coordinadores -->
-      {% elif user.is_staff %}
+
+      {% elif escolar %}
+      <li class="nav-item active">
+          <a class="nav-link" href="{% url 'tablero' %}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tablero</span></a>
+        </li>
+
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'solicitudes' %}">
+        <a class="nav-link" href="">
           <i class="fas fa-fw fa-table"></i>
-          <span>Solicitudes</span></a>
+          <span>Calificar Materias</span></a>
       </li>
-      <!-- Alumno -->
+
+      {% elif academia %}
+      <li class="nav-item active">
+          <a class="nav-link" href="{% url 'tablero' %}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tablero</span></a>
+        </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Validar Materias</span></a>
+      </li>
+
       {% else %}
+      <li class="nav-item active">
+          <a class="nav-link" href="{% url 'tablero' %}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tablero</span></a>
+        </li>
+
       <li class="nav-item">
         <a class="nav-link" href="{% url 'solicitud' %}">
           <i class="fas fa-fw fa-table"></i>
-          <span>Solicitud</span></a>
+          <span>Crear Solicitud</span></a>
       </li>
+
       {% endif %}
+
+
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -159,7 +194,7 @@
                 </h6>
                 <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="img/user.png" alt="">
+                    <img class="rounded-circle" src="{% static 'simel/img/user.png' %}" alt="">
                     <div class="status-indicator bg-success"></div>
                   </div>
                   <div>
@@ -195,20 +230,26 @@
 
         </nav>
         <!-- End of Topbar -->
-
         <!-- Begin Page Content -->
+{% if user.is_staff or user.is_superuser %}
         <div class="container-fluid">
-          {% if user.is_staff %}
           <!-- Jefatura -->
           <div class="row">
-
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Solicitudes</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ solicitudes }}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          {% if user.is_superuser %}
+                            {{ solicitudes }}
+                            {% elif user.is_staff %}
+                              {% for a in contCoord %}
+                                {{ a.total }}
+                              {% endfor %}
+                            {% endif %}
+                      </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-list fa-2x text-gray-300"></i>
@@ -226,7 +267,15 @@
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Solicitudes Finalizadas</div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ finalizados }}</div>
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                            {% if user.is_superuser %}
+                            {{ finalizados }}
+                            {% elif user.is_staff %}
+                              {% for a in contCoord %}
+                                {{ a.finalizado }}
+                              {% endfor %}
+                            {% endif %}
+                          </div>
                         </div>
                         <div class="col">
                           <div class="progress progress-sm mr-2">
@@ -252,7 +301,15 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text- text-warning  uppercase mb-1">Solicitudes Pendientes
                       </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pendientes }}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          {% if user.is_superuser %}
+                          {{ pendientes }}
+                          {% elif user.is_staff %}
+                            {% for a in contCoord %}
+                              {{ a.pendiente }}
+                            {% endfor %}
+                          {% endif %}
+                      </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-table fa-2x text-gray-300"></i>
@@ -268,7 +325,15 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Solicitudes Rechazadas</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ rechazados }}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          {% if user.is_superuser %}
+                          {{ rechazados }}
+                          {% elif user.is_staff %}
+                            {% for a in contCoord %}
+                              {{ a.rechazado }}
+                            {% endfor %}
+                          {% endif %}
+                      </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-table fa-2x text-gray-300"></i>
@@ -350,7 +415,7 @@
               </div>
             </div>
           </div>
-          {% endif %}
+
           <!-- Content Row -->
           <div class="row">
 
@@ -493,6 +558,17 @@
         </div>
         <!-- /.container-fluid -->
 
+        {% else %}
+
+        <div class="container-fluid">
+          <h4>Bienvenido {{ user.first_name }} {{ user.last_name }}</h4>
+            <div class="row">
+
+              </div>
+              </div>
+
+
+{% endif %}
       </div>
       <!-- End of Main Content -->
 

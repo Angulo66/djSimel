@@ -39,11 +39,17 @@
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
         <div class="sidebar-brand-icon rotate-n-15">
         </div>
-        <div class="sidebar-brand-text mx-3">SIMEL ADMIN<sup></sup></div>
+        <div class="sidebar-brand-text mx-3">{{ user.first_name }} {{ user.last_name }}<sup></sup></div>
       </a>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
+
+      <li class="nav-item">
+          <a class="nav-link" href="{% url 'tablero' %}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tablero</span></a>
+        </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item active">
@@ -148,7 +154,7 @@
                 </h6>
                 <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
+                    <img class="rounded-circle" src="" alt="">
                     <div class="status-indicator bg-success"></div>
                   </div>
                   <div>
@@ -166,8 +172,8 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.username }}</span>
-                <img class="img-profile rounded-circle" src="{ docente.foto }">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user. }}</span>
+                <img class="img-profile rounded-circle" src="{% static 'simel/img/user.png' %}">
               </a>
 
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -285,7 +291,7 @@
         <div class="modal-body">Asegurese de haber guardado cambios hecho antes de cerrar su session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="./logout">Cerrar Session</a>
+          <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Session</a>
         </div>
       </div>
     </div>
@@ -299,7 +305,7 @@
   <script src="{% static 'simel/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="{% static 'simel/js/sb-admin-2.min.js' %}"></script>
+  <script src="{% static 'simel/js/simel.min.js' %}"></script>
 
   <!-- Page level plugins -->
   <script src="{% static 'simel/vendor/datatables/jquery.dataTables.min.js' %}"></script>
