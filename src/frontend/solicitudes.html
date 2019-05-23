@@ -215,12 +215,14 @@
                     </tr>
                   </tfoot>
                   <tbody>
-                    {% for obj in object_list %}
+                    {% for t in solicitud %}
                     <tr>
-                      <td>{{ item.numeroControl }}</td>
-                      <td>{{ item.idInstituto }}</td>
-                      <td>{{ item.fechaSolic }}</td>
-                      <td>{{ item.idStatus }}</td>
+                      <td>{{ t.numControl }}</td>
+                      <td>{{ t.nombre }}</td>
+                      <td>{{ t.nomcarrera }}</td>
+                      <td>{{ t.instituto }}</td>
+                      <td>{{ t.fechaSolic }}</td>
+                      <td>{{ t.descStat }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>

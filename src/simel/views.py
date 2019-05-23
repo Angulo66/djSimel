@@ -28,11 +28,20 @@ def tablero(request):
     solPend = Solicitud.objects.filter(idStatus=2).count()
     solRech = Solicitud.objects.filter(idStatus=4).count()
     solFin = Solicitud.objects.filter(idStatus=5).count()
+
+    sisCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.id=1")
+    ticsCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.id=2")
+    bioCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.id=3")
+
+
     context = {
         "solicitudes": solicitudes,
         "pendientes": solPend,
         "rechazados": solRech,
-        "finalizados": solFin
+        "finalizados": solFin,
+        "contS": sisCont,
+        "contT": ticsCont,
+        "contB": bioCont
     }
     return render(request, 'base.html', context)
 
@@ -62,9 +71,10 @@ def solicitud_detail(request, id=None):
 
 
 def solicitudes(request):
-    queryset = Solicitud.objects.all()
+    solicitud = Solicitud.objects.raw("Select a.*,c.nombre as nomcarrera,i.instituto,ss.fechasolic,st.descstat from simel_solicitud ss inner join simel_alumno a on ss.numerocontrol_id=a.id inner join simel_carrera c on c.id=a.idcarrera_id inner join simel_status st on ss.idstatus_id=st.id inner join simel_instituto i on i.id=ss.idinstituto_id")
     context = {
-        "object_list": queryset
+        "solicitud": solicitud
     }
     template = 'solicitudes.html'
-    return render(request, template, queryset)
+    return render(request, template, context)
+
