@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Materia Form</h2>
+<form method="post" novalidate>
+        <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="inputNumeroDeControl">Numero de Control</label>
+                    <input type="text" class="form-control" id="inputNumeroDeControl"
+                        placeholder="{{ a.numcontrol }}" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputNombre">Nombre</label>
+                    <input type="text" class="form-control" id="inputNombre"
+                        placeholder="{{ a.nombre }}" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputSemestre">Semestre</label>
+                    <input type="text" class="form-control" id="inputSemestre"
+                        placeholder="{{ a.semestre }}" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputSemestre">Carrera</label>
+                    <input type="text" class="form-control" id="inputSemestre"
+                        placeholder="{{ a.carrera }}" disabled>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputSemestre">Especialidad</label>
+                    <input type="text" class="form-control" id="inputSemestre" placeholder="{{ a.esp }}"
+                        disabled>
+                </div>
+            </div>
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <button type="submit">Save</button>
+  <a href="{% url 'materia_changelist' %}">Nevermind</a>
+</form>
+{% endblock %}

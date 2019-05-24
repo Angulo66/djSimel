@@ -185,116 +185,16 @@
 
                 </nav>
                 <!-- End of Topbar -->
-                {% if user.is_authenticated %}
+                {% if academia %}
                 <!-- Form Content -->
                 <div class="container-fluid col-md-8">
-                    <form method="POST" action=""> {% csrf_token %}
-                        <div class="form-row">
-                            <h4>{{ titulo }}</h4>
-                            {% for a in datos %}
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label for="inputNumeroDeControl">Numero de Control</label>
-                                    <input type="text" class="form-control" id="inputNumeroDeControl"
-                                        placeholder="{{ form.numeroControl }}" disabled>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="inputNombre">Nombre</label>
-                                    <input type="text" class="form-control" id="inputNombre"
-                                        placeholder="{{ a.nombre }}" disabled>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="inputSemestre">Semestre</label>
-                                    <input type="text" class="form-control" id="inputSemestre"
-                                        placeholder="{{ a.semestre }}" disabled>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="inputSemestre">Carrera</label>
-                                    <input type="text" class="form-control" id="inputSemestre"
-                                        placeholder="{{ a.carrera }}" disabled>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="inputSemestre">Especialidad</label>
-                                    <input type="text" class="form-control" id="inputSemestre" placeholder="{{ a.esp }}"
-                                        disabled>
-                                </div>
-                            </div>
-                            {% endfor %}
-                            <div class="row">
-                                <div class="form-group col-md-3">
-                                    <label for="inputPais">PAIS</label>
-                                    <select id="inputPais" class="form-control">
-                                        <option selected>Eligir...</option>
-                                        <option>Mexico</option>
-                                        <option>EUA</option>
-                                        <option>Canada</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="inputEstado">Estado</label>
-                                    <select id="inputEstado" class="form-control">
-                                        <option selected>Eligir...</option>
-                                        <option>Aqui estados de la tabla</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="inputInstitucionPro">Institucion</label>
-                                    <select id="inputInstitucionPro" class="form-control">
-                                        <option selected>Eligir...</option>
-                                        <option>Aqui instituciones de la tabla</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    </select>
-                                    <label for="inputmaterias">Materias</label>
-                                    <select id="inputmaterias" class="custom-select form-control" multiple>
-                                        <option selected>Open this select menu</option>
-                                        <option value="1">Materia 1</option>
-                                        <option value="2">Materia 2</option>
-                                        <option value="3">Materia 3</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group col-md-4">
-                                <!--<h4>Datos Personales</h4>
-                                {{ form.as_p }}
-                                <input type="submit" value="create post" />
-                                -->
-
-                                {{ form.as_table }}
-
-                                <table id="adicion" class="table table-striped ">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Nombre Materia</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-
-                                        </tr>
-                                </table>
-
-
-                            </div>
-                        </div>
-                    </form>
-
+                    <h3>Hola academia</h3>
+                    
                     <!-- Content Row -->
                     <div class="row">
                         <div class="col-lg-6 mb-4">
 
-                            <div class="btn-group">
-                                <button type="submit" class="btn btn-success" onclick=mensaje()> Guardar</button>
-                                <button type="button" class="btn btn-info" onclick=Cancelar()>Cancelar </button>
-                                <button type="submit" class="btn btn-primary" id="Añadir" onclick=agregar()>Añadir
-                                    Materia</button>
 
-                                  
-
-                            </div>
 
                         </div>
                     </div>
