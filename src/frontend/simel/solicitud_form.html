@@ -1,13 +1,17 @@
 {% extends 'js.html' %}
+
+{% load crispy_forms_tags %}
+
 {% block content %}
+
+<div class="container">
 <h2>Materia Form</h2>
 <form method="post" novalidate>
     {% csrf_token %}
     <div class="form-row">
         <div class="form-group col-md-4">
             <label for="inputNumeroDeControl">Numero de Control</label>
-            <input type="text" class="form-control" id="inputNumeroDeControl" placeholder="{{ user.username }}"
-                disabled>
+            <input type="text" class="form-control" id="inputNumeroDeControl" placeholder="{{ user.username }}" disabled>
         </div>
         <div class="form-group col-md-4">
             <label for="inputNombre">Nombre</label>
@@ -18,26 +22,22 @@
             <label for="inputSemestre">Semestre</label>
             <input type="text" class="form-control" id="inputSemestre" placeholder="" disabled>
         </div>
+
         <div class="form-group col-md-4">
-            <label for="inputSemestre">Instituto</label>
-            <input name="form.idInstituto" class="form-control" value="" placeholder="{{ a.carrera }}">
+            {{ form.idInstituto|as_crispy_field }}
         </div>
 
         <div class="form-group col-md-4">
-            <label>Instituto</label>
-            {{ form.coment }}
-
-            {{ form.idInstituto.TextInput(attrs={
-                'class':'form-control',
-            }) }}
-
-            {{ form.idStatus.as_hidden }}
-            {{ form.idAcademia.as_hidden }}
-            {{ form.idServicio.as_hidden }}
-            {{ form.numeroControl.as_hidden }}
-            <button type="submit">Save</button>
+            {{ form.coment|as_crispy_field }}
         </div>
+
+        {{ form.idStatus.as_hidden }}
+        {{ form.idAcademia.as_hidden }}
+        {{ form.idServicio.as_hidden }}
+        {{ form.numeroControl.as_hidden }}
 
     </div>
+    <button class="btn btn-primary" type="submit">Enviar</button>
 </form>
+</div>
 {% endblock %}

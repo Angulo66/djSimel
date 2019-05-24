@@ -9,7 +9,8 @@ urlpatterns = [
     path('servicio', views.servicio, name='servicio')
 ]
 
-# Materia Mixins
+
+# Materia Solicitada Mixins
 
 urlpatterns += [
     path('materia', views.MateriaSolicitadaListView.as_view(), name='materia_changelist'),
@@ -24,3 +25,5 @@ urlpatterns += [
     path('solicitud/add', views.SolicitudCreateView.as_view(), name='solicitud_add'),
     path('solicitud/<int:pk>', views.SolicitudUpdateView.as_view(), name='solicitud_change')
 ]
+
+# Materias Solicitadas

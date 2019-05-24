@@ -102,7 +102,7 @@ def solicitudes(request):
 
 class SolicitudListView(ListView):
     model = Solicitud
-    context_object_name = 'solicitud'
+    context_object_name = 'solicitud_changelist'
 
 
 class SolicitudCreateView(LoginRequiredMixin , CreateView):

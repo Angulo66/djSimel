@@ -13,7 +13,6 @@ class SolicitudForm(forms.ModelForm):
             "idServicio",
             "idAcademia"
         ]
-        widgets = {'idStatus': forms.HiddenInput()}
 
 
 class MateriaSolicitadaForm(forms.ModelForm):
