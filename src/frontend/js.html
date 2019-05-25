@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,8 +10,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
-  <title>SIMEL - Solicitudes </title>
 
   <!-- Custom fonts for this template -->
   <link href="{% static 'simel/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -40,25 +37,25 @@
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
         <div class="sidebar-brand-icon rotate-n-15">
         </div>
-        <div class="sidebar-brand-text mx-3">SIMEL ADMIN<sup></sup></div>
+        <div class="sidebar-brand-text mx-3">{{ user.first_name }} {{ user.last_name }}<sup></sup></div>
       </a>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Tables -->
+      <!-- Nav Item -->
       <hr class="sidebar-divider my-0">
 
       <li class="nav-item ">
         <a class="nav-link" href="{% url 'solicitud_changelist' %}">
           <i class="fas fa-fw fa-table"></i>
-          <span>Ver Solicitudes </span></a>
+          <span>Ver Solicitudes</span></a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="{% url 'materia_add' %}">
           <i class="fas fa-fw fa-table"></i>
-          <span>Ver Materias </span></a>
+          <span>Ver Materias</span></a>
       </li>
 
       <!-- Divider -->
@@ -200,7 +197,6 @@
 {% endblock content %}
 
 </div>
-
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">

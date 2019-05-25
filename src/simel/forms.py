@@ -1,5 +1,6 @@
 from django import forms
-from .models import MateriaSolicitada, Solicitud, Materia, Instituto, Carrera
+
+from .models import Carrera, Instituto, Materia, MateriaSolicitada, Solicitud
 
 
 class SolicitudForm(forms.ModelForm):
@@ -26,6 +27,7 @@ class MateriaSolicitadaForm(forms.ModelForm):
             "calif"
         ]
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.fields['idMateria'].queryset = Materia.objects.none()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['idMateria'].queryset = Materia.objects.none()
+

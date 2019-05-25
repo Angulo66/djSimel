@@ -72,7 +72,7 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+                    <h1>Solicitud</h1>
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -196,7 +196,7 @@
                                 <div class="form-group col-md-4">
                                     <label for="inputNumeroDeControl">Numero de Control</label>
                                     <input type="text" class="form-control" id="inputNumeroDeControl"
-                                        placeholder="{{ form.numeroControl }}" disabled>
+                                        placeholder="{{ a.numcontrol }}" disabled>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputNombre">Nombre</label>
@@ -205,8 +205,8 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputSemestre">Semestre</label>
-                                    <input type="text" class="form-control" id="inputSemestre"
-                                        placeholder="{{ a.semestre }}" disabled>
+                                    <input type="text" class="form-control" id="inputSemestre" placeholder="{{sem}}"
+                                        disabled>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="inputSemestre">Carrera</label>
@@ -214,6 +214,7 @@
                                         placeholder="{{ a.carrera }}" disabled>
                                 </div>
                                 <div class="form-group col-md-4">
+
                                     <label for="inputSemestre">Especialidad</label>
                                     <input type="text" class="form-control" id="inputSemestre" placeholder="{{ a.esp }}"
                                         disabled>
@@ -222,53 +223,65 @@
                             {% endfor %}
                             <div class="row">
                                 <div class="form-group col-md-3">
-                                    <label for="inputPais">PAIS</label>
-                                    <select id="inputPais" class="form-control">
-                                        <option selected>Eligir...</option>
-                                        <option>Mexico</option>
-                                        <option>EUA</option>
-                                        <option>Canada</option>
+                                    <label for="inputPais">Pais</label>
+                                    <select id="inputPais" class="form-control" onchange="pap();">
+                                        <option hidden>Eligir...</option>
+                                        {% for a in paises %}
+                                        <option>{{a.pais}}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="inputEstado">Estado</label>
-                                    <select id="inputEstado" class="form-control">
-                                        <option selected>Eligir...</option>
-                                        <option>Aqui estados de la tabla</option>
+                                    <select id="inputEstado" class="form-control" onchange="estado();" disabled>
+                                        <option hidden>Eligir...</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3">
+                                    <label for="inputMunicipio">Municipio</label>
+                                    <select id="inputMunicipio" class="form-control" onchange="municipio();" disabled>
+                                        <option hidden>Eligir...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="inputLocalidad">Localidad</label>
+                                    <select id="inputLocalidad" class="form-control" onchange="localidad();" disabled>
+                                        <option hidden>Eligir...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
                                     <label for="inputInstitucionPro">Institucion</label>
-                                    <select id="inputInstitucionPro" class="form-control">
-                                        <option selected>Eligir...</option>
-                                        <option>Aqui instituciones de la tabla</option>
+                                    <select id="inputInstitucionPro" class="form-control" onchange="instituto();"
+                                        disabled>
+                                        <option hidden>Eligir...</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    </select>
-                                    <label for="inputmaterias">Materias</label>
-                                    <select id="inputmaterias" class="custom-select form-control" multiple>
-                                        <option selected>Open this select menu</option>
-                                        <option value="1">Materia 1</option>
-                                        <option value="2">Materia 2</option>
-                                        <option value="3">Materia 3</option>
+                                    <label for="inputMaterias">Materias</label>
+                                    <select id="inputMaterias" class="form-control" disabled>
+                                        <option hidden>Eligir...</option>
+                                        <option>Aqui materias de la tabla</option>
+
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="form-group col-md-4">
+                            <div class="row col-md-6">
+                                <div class="form-group">
+                                    <label for="comment">Comentario:</label>
+                                    <textarea class="form-control" rows="5" id="comment" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group  col-sm-2 col-md-4">
                                 <!--<h4>Datos Personales</h4>
                                 {{ form.as_p }}
                                 <input type="submit" value="create post" />
                                 -->
 
-                                {{ form.as_table }}
-
                                 <table id="adicion" class="table table-striped ">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Nombre Materia</th>
+                                            <th id="numero" scope="col">#</th>
+                                            <th id="nombre" scope="col">Materia</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -287,13 +300,13 @@
                         <div class="col-lg-6 mb-4">
 
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-success" onclick=mensaje()> Guardar</button>
+                                <button type="submit" value='SUBMIT' class="btn btn-success" onclick=enviar()>
+                                    Guardar</button>
                                 <button type="button" class="btn btn-info" onclick=Cancelar()>Cancelar </button>
-                                <button type="submit" class="btn btn-primary" id="Añadir" onclick=agregar()>Añadir
+                                <button type="alta" class="btn btn-primary" id="Añadir" onclick="agregar();">Añadir
                                     Materia</button>
-
-                                  
-
+                                <button type="baja" class="btn btn-danger" id="Quitar" onclick="remover();">Quitar
+                                    Materia</button>
                             </div>
 
                         </div>
@@ -358,7 +371,174 @@
     <script src="{% static 'simel/js/simel.min.js' %}"></script>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'simel/js/botones.js' %}"></script>
+    <script type="text/javascript">
+        function enviar() {
+            if (x.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/simel/simel/solicita',
+                    data: {
+                        instituto: $('#inputInstitucionPro').find('option:selected').val(),
+                        numero: 
+                            {{ id }}
+                        ,
+                        materia: x,
+                        comntario: $('#comment').val(),
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function () {
+                        alert('Su Solicitud Fue enviada!')
+                        location.reload()
+                    }
+                });
+            } else
+                alert('Te falta llenar datos')
+        }
+
+        function pap() {
+            var valor = $('#inputPais').find('option:selected').text();
+            $('#inputEstado').empty();
+            $('#inputEstado').append(`<option hidden >Eligir...</option>`)
+            $('#inputMunicipio').empty()
+            $('#inputMunicipio').append(`<option hidden >Eligir...</option>`)
+            $('#inputLocalidad').empty()
+            $('#inputLocalidad').append(`<option hidden >Eligir...</option>`)
+            $('#inputInstitucionPro').empty()
+            $('#inputInstitucionPro').append(`<option hidden >Eligir...</option>`)
+            $('#inputMaterias').empty()
+            $('#inputMaterias').append(`<option hidden >Eligir...</option>`)
+            c = [] {% for t in lugares %}
+            var x = '{{t.pais}}'
+            var i = '{{t.estado}}'
+            if (x == valor && !c.includes(i)) {
+                $('#inputEstado').append(`<option>${i}</option>`)
+                c.push(i)
+            } {% endfor %}
+            $('#inputEstado').prop("disabled", false);
+            console.log(valor);
+            removert();
+        }
+
+        function municipio() {
+            var valor = $('#inputMunicipio').find('option:selected').text();
+            $('#inputLocalidad').empty()
+            $('#inputLocalidad').append(`<option hidden >Eligir...</option>`)
+            $('#inputInstitucionPro').empty()
+            $('#inputInstitucionPro').append(`<option hidden >Eligir...</option>`)
+            $('#inputMaterias').empty()
+            $('#inputMaterias').append(`<option hidden >Eligir...</option>`)
+            c = [] {% for t in lugares %}
+            var x = '{{t.municipio}}'
+            console.log(x);
+            var i = '{{t.localidad}}'
+            if (x == valor && !c.includes(i)) {
+                $('#inputLocalidad').append(`<option>${i}</option>`)
+                c.push(i)
+            } {% endfor %}
+            $('#inputLocalidad').prop("disabled", false);
+            console.log(valor);
+            removert();
+        }
+
+        function estado() {
+            var valor = $('#inputEstado').find('option:selected').text();
+            $('#inputMunicipio').empty()
+            $('#inputMunicipio').append(`<option hidden >Eligir...</option>`)
+            $('#inputLocalidad').empty()
+            $('#inputLocalidad').append(`<option hidden >Eligir...</option>`)
+            $('#inputInstitucionPro').empty()
+            $('#inputInstitucionPro').append(`<option hidden >Eligir...</option>`)
+            $('#inputMaterias').empty()
+            $('#inputMaterias').append(`<option hidden >Eligir...</option>`)
+            c = [] {% for t in lugares %}
+            var x = '{{t.estado}}'
+            console.log(x);
+            var i = '{{t.municipio}}'
+            if (x == valor && !c.includes(i)) {
+                $('#inputMunicipio').append(`<option>${i}</option>`)
+                c.push(i)
+            } {% endfor %}
+            $('#inputMunicipio').prop("disabled", false);
+            console.log(valor);
+            removert();
+        }
+
+        function localidad() {
+            var valor = $('#inputLocalidad').find('option:selected').text();
+            $('#inputInstitucionPro').empty()
+            $('#inputInstitucionPro').append(`<option hidden >Eligir...</option>`)
+            $('#inputMaterias').empty()
+            c = []
+            $('#inputMaterias').append(`<option hidden >Eligir...</option>`) {% for t in lugares %}
+            var x = '{{t.localidad}}'
+            console.log(x);
+            var i = '{{t.instituto}}'
+            if (x == valor && !c.includes(i)) {
+                $('#inputInstitucionPro').append(`<option>${i}</option>`)
+                c.push(i)
+            } {% endfor %}
+            $('#inputInstitucionPro').prop("disabled", false);
+            console.log(valor);
+            removert();
+        }
+
+        function instituto() {
+            var valor = $('#inputInstitucionPro').find('option:selected').text();
+            $('#inputMaterias').empty()
+            $('#inputMaterias').append(`<option hidden >Eligir...</option>`)
+            c = [] {% for t in lugares %}
+            var x = '{{t.instituto}}'
+            console.log(x);
+            var i = '{{t.materia}}'
+            if (x == valor && i != 'None' && !c.includes(i)) {
+                $('#inputMaterias').append(`<option>${i}</option>`)
+                c.push(i)
+            } {% endfor %}
+            $('#inputMaterias').prop("disabled", false);
+            console.log(valor);
+            removert();
+        }
+        var x = [];
+        var cuenta = 0;
+
+        function agregar() {
+            var valor = $('#inputMaterias').find('option:selected').text();
+            if (valor != 'Eligir...') {
+                cuenta++;
+                document.getElementById("adicion").insertRow(-1).innerHTML = `<td>${cuenta}</td><td>${valor}</td>`;
+                $('#inputMaterias').find('option:selected').remove()
+                x.push(valor);
+            }
+        }
+
+        function remover() {
+            var table = document.getElementById("adicion");
+            if (cuenta >= 0) {
+                if (x.length > 0) {
+                    $('#inputMaterias').append(`<option>${x[x.length-1]}</option>`)
+                    x.pop()
+                    table.deleteRow(cuenta + 1);
+                    cuenta--;
+                }
+            }
+        }
+
+        function removert() {
+            $('#adicion').empty()
+            $('#adicion').append(` <thead>
+                                        <tr>
+                                            <th id="numero" scope="col">#</th>
+                                            <th id="nombre" scope="col">Materia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+
+                                        </tr>`)
+            cuenta = 0
+            x = []
+        }
+    </script>
 
 </body>
 

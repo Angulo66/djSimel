@@ -1,18 +1,14 @@
 from django.contrib import admin
-
 # Register your models here.
 from django.db import models
 
+from .models import (Academia, Aduedo, Alumno, Carrera, Coordinador, Estado,
+                     Instituto, Jefatura, Localidad, Materia,
+                     MateriasDelAlumno, MateriaSolicitada, Movimiento,
+                     Municipio, Pais, Plan, ServicioEscolar, Solicitud, Status)
+
 admin.AdminSite.site_header = "SIMEL ADMIN"
 
-from .models import (
-    Plan, Carrera, Alumno,
-    Estado, Pais, Municipio, Localidad,
-    Instituto, Materia, MateriasDelAlumno,
-    ServicioEscolar, Academia, MateriaSolicitada,
-    Status, Solicitud, Movimiento, Jefatura,
-    Coordinador, Aduedo
-    )
 
 class AdeudoAdmin(admin.ModelAdmin):
     list_display = ('numControl','creditosAcum','cantMov','matRC','eligible')
@@ -43,9 +39,9 @@ class MateriasSolAdmin(admin.ModelAdmin):
     list_filter = ('idCarrera', 'idInstituto','idSolicitud')   
 
 class SolicitudAdmin(admin.ModelAdmin):
-    list_display = ('coment','numeroControl','fechaSolic',)
-    list_filter = ('idInstituto','idStatus','fechaSolic')
-    date_hierarchy = 'fechaSolic'    
+    list_display = ('coment', 'numeroControl','fechaSolic',)
+    list_filter = ('idInstituto', 'idStatus','fechaSolic')
+    date_hierarchy = 'fechaSolic' 
 
 admin.site.register(Plan)
 admin.site.register(Carrera, CarreraAdmin)

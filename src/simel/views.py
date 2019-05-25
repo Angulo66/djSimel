@@ -1,58 +1,70 @@
-from django.contrib import messages
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import Group, User
-from django.db.models.base import ObjectDoesNotExist
-# Create your views here.
 from django.http import HttpResponse
-from django.shortcuts import (HttpResponseRedirect, get_object_or_404,
-                              redirect, render, reverse)
+# Create your views here.
+from django.shortcuts import (get_object_or_404, render, reverse)
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
 
 from .forms import MateriaSolicitadaForm, SolicitudForm
-from .models import (Alumno, Instituto, Materia, MateriaSolicitada, Solicitud,
-                     Status, Academia, ServicioEscolar)
+from .models import (Alumno, Materia, MateriaSolicitada, Solicitud,
+                     Status, Academia, ServicioEscolar, Instituto, Movimiento)
 
-# COUNT carreras por departamento
+obj = Solicitud.objects
 
-sisCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Sistemas\'")
-ticsCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.id=\'Ing. TICs\'")
-bioCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Bioquimica\'")
-eleCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Electronica\'")
-elcCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Electrica\'")
-indCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Industrial\'")
-mecCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Mecanica\'")
-mechCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Mecatronica\'")
-eneCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Energias Renovables\'")
-ambCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Ambiental\'")
-empCont = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Gestion Empreserial\'")
+# COUNT carreras departamento
 
-# COUNT Solicitudes & Status
+sisCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa "+
+"ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Sistemas\'")
+ticsCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa "+
+"ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.id=\'Ing. TICs\'")
+bioCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa "+
+"ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Bioquimica\'")
+eleCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Electronica\'")
+elcCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Electrica\'")
+indCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Industrial\'")
+mecCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Mecanica\'")
+mechCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Mecatronica\'")
+eneCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Energias Renovables\'")
+ambCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Ambiental\'")
+empCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Gestion Empreserial\'")
 
-solicitudesC = Solicitud.objects.all().count()
-pendientes = Solicitud.objects.filter(idStatus=2).count()
-aceptados = Solicitud.objects.filter(idStatus=3).count()
-rechazados = Solicitud.objects.filter(idStatus=4).count()
-finalizados = Solicitud.objects.filter(idStatus=5).count()
 
-def tablero(request):
-    count_status_coord = Solicitud.objects.raw("SELECT 1 as id, COUNT(*) as total, COUNT( case when st.status='Finalizado' then st.status end) as finalizado, COUNT( case when st.status='Acpetado' then st.status end) as aceptado, COUNT( case when st.status='Enviado' then st.status end) as enviado, COUNT( case when st.status='Rechazado' then st.status end) as rechazado, COUNT( case when st.status='Pendiente' then st.status end) as pendiente FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id WHERE au.username='{}'".format(request.user.username))
+# Tablero view
+
+def tablero(request): 
+    count_status_coord = obj.raw("SELECT 1 as id, COUNT(*) as total, "+
+    "COUNT( case when st.status='Finalizado' then st.status end) as finalizado, "+
+    "COUNT( case when st.status='Acpetado' then st.status end) as aceptado, "+
+    "COUNT( case when st.status='Enviado' then st.status end) as enviado, "+
+    "COUNT( case when st.status='Rechazado' then st.status end) as rechazado, "+
+    "COUNT( case when st.status='Pendiente' then st.status end) as pendiente FROM auth_user au "+
+    "INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id "+
+    "INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id "+
+    "INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id "+
+    "WHERE au.username='{}'".format(request.user.username))
     
-    is_escolar = Solicitud.objects.raw("select 1 as id, count(*) as existe from simel_servicioescolar e inner join auth_user au on au.id=idusuario_id where au.username='{}'".format(request.user.username))
-    is_academia = Solicitud.objects.raw("select 1 as id, count(*) as existe from simel_academia e inner join auth_user au on au.id=idusuario_id where au.username='{}'".format(request.user.username))
+    is_escolar = obj.raw("select 1 as id, count(*) as existe from simel_servicioescolar e "+
+    "inner join auth_user au on au.id=idusuario_id where au.username='{}'".format(request.user.username))
+    is_academia = obj.raw("select 1 as id, count(*) as existe from simel_academia e "+
+    "inner join auth_user au on au.id=idusuario_id where au.username='{}'".format(request.user.username))
     
     for a in is_escolar:
-        esc = a.existe is not 0 # True if 1
+        auth_escolar = a.existe is not 0 # True if 1
 
     for a in is_academia:
-        acc = a.existe is not 0 # False is 0   
-    
+        auth_academia = a.existe is not 0 # False is 0   
+
     context = {
-        "solicitudes": solicitudesC, "contCoord": count_status_coord,
-        "pendientes": pendientes, "escolar": esc,
-        "rechazados": rechazados,  "academia": acc,
-        "finalizados": finalizados,
+        "solicitudes": obj.all().count(),
+        "rechazados": obj.filter(idStatus=4).count(),
+        "finalizados": obj.filter(idStatus=5).count(),
+        "aceptados": obj.filter(idStatus=3).count(),
+        "pendientes": obj.filter(idStatus=2).count(),
+        "contCoord": count_status_coord,
+
+        "escolar": auth_escolar,
+        "academia": auth_academia,
+
         "contS": sisCont, "contEl": elcCont, "contEr": eneCont,
         "contT": ticsCont, "contI": indCont, "contA": ambCont,
         "contB": bioCont, "contM": mecCont, "contEm": empCont,
@@ -63,21 +75,77 @@ def tablero(request):
 
 def servicio(request):
     template = 'servicio.html'
-    context = {
-    }
-    return render(request, template, context)
+
+    return render(request, template)
 
 
 def solicitud(request):
-    form = SolicitudForm
-    datos_personales = Solicitud.objects.raw("SELECT 1 as id, a.numcontrol as numcontrol ,a.nombre ||' '||a.apellido as nombre,sc.nombre as carrera, sc.especialidad as esp ,a.semestre FROM simel_alumno a inner join auth_user au on a.idusuario_id=au.id  inner join  simel_carrera sc on sc.id=a.idcarrera_id WHERE au.username={}".format(request.user.username))
-    template = 'simel/solicitud_form.html'
+    datos_personales = Solicitud.objects.raw("SELECT a.id as id, a.numcontrol as numcontrol ,a.nombre ||' '||a.apellido as nombre,sc.nombre as carrera, sc.especialidad as esp ,a.semestre FROM simel_alumno a inner join auth_user au on a.idusuario_id=au.id  inner join  simel_carrera sc on sc.id=a.idcarrera_id WHERE au.username={}".format(request.user.username))
+    paises = Solicitud.objects.raw("SELECT 1 as id, sp.pais From simel_pais sp")
+    template = 'solicitud.html'
+    seme = ["","Primer","Segundo","Tercer","Cuarto","Quinto","Sexto","Septimo","Octavo","Noveno","Decimo","Onceavo","Doceavo"]
+    x=0
+    carrera=''
+    id =0
+    for i in datos_personales:
+        x=i.semestre
+        carrera=i.carrera
+        id =i.id
+    lugares = Solicitud.objects.raw("SELECT 1 as id, e.estado,sp.pais,m.municipio,c.localidad,i.instituto,mm.materia FROM simel_estado e inner join simel_pais sp  on sp.id=e.idpais_id inner join simel_municipio m on m.idestado_id=e.id inner join simel_localidad c on c.idmunicipio_id=m.id inner join simel_instituto i on c.id=i.idlocalidad_id left join simel_materia mm on mm.idinstituto_id=i.id inner join simel_carrera sc on sc.id=mm.idcarrera_id Where sc.nombre='{}'".format(carrera))
     context = {
         "titulo": "Datos Personales",
         "datos": datos_personales,
-        "form": form
+        "id": id,
+        "paises": paises,
+        "lugares": lugares,
+        "sem":seme[x]
     }
     return render(request, template, context)
+
+
+def create_solicitud(request):
+    if request.method =='POST':
+        instituto = request.POST['instituto']
+        numecontrol = request.POST['numero']
+        materia= request.POST.getlist('materia[]')
+        nid=0
+        nins=solcoord = Solicitud.objects.raw("SELECT si.id from simel_instituto si WHERE si.instituto='{}'".format(instituto))
+        for i in nins:
+            nid=i.id
+        print(materia)
+        ins = Instituto.objects.get(pk =nid)
+        al = Alumno.objects.get(pk=numecontrol)
+        st = Status.objects.get(pk= 1)
+        serv = ServicioEscolar.objects.get(pk= 1)
+        aca = Academia.objects.get(pk= 1)
+        a=Solicitud(
+            coment =request.POST['comntario'] ,
+            idInstituto = ins,
+            numeroControl = al,
+            idStatus =  st,
+            idServicio = serv,
+            idAcademia =aca
+        )
+        a.save()
+        query = Solicitud.objects.raw("SELECT id,materia from simel_materia")
+        for a in materia:
+            for i in query:
+                if(i.materia==a):
+                    detalle=MateriaSolicitada(
+                          idSolicitud = Solicitud.objects.all().last(),
+                          idMateria = Materia.objects.get(pk=i.id) ,
+                          idInstituto =ins, 
+                          idCarrera = Materia.objects.get(pk=i.id).idCarrera,
+                          calif =0.00,
+                    )
+                    detalle.save()
+        m = Movimiento(
+               idSolicitud = Solicitud.objects.all().last(),
+               usuario = al.idUsuario,
+               idStatus = st
+        )
+        m.save()
+    return HttpResponse('')
 
 
 def solicitud_detail(request, id=None):
@@ -90,8 +158,8 @@ def solicitud_detail(request, id=None):
 
 
 def solicitudes(request):
-    solicitud = Solicitud.objects.raw("Select a.*,c.nombre as nomcarrera,i.instituto,ss.fechasolic,st.descstat from simel_solicitud ss inner join simel_alumno a on ss.numerocontrol_id=a.id inner join simel_carrera c on c.id=a.idcarrera_id inner join simel_status st on ss.idstatus_id=st.id inner join simel_instituto i on i.id=ss.idinstituto_id")
-    solcoord = Solicitud.objects.raw("SELECT 1 as id, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id WHERE au.username='{}'".format(request.user.username))
+    solicitud = obj.raw("Select a.*,c.nombre as nomcarrera,i.instituto,ss.fechasolic,st.descstat from simel_solicitud ss inner join simel_alumno a on ss.numerocontrol_id=a.id inner join simel_carrera c on c.id=a.idcarrera_id inner join simel_status st on ss.idstatus_id=st.id inner join simel_instituto i on i.id=ss.idinstituto_id")
+    solcoord = obj.raw("SELECT 1 as id, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id WHERE au.username='{}'".format(request.user.username))
     context = {
         "solicitud": solicitud,
         "coordS": solcoord
@@ -124,7 +192,7 @@ class SolicitudCreateView(LoginRequiredMixin , CreateView):
 class SolicitudUpdateView(UpdateView):
     model = Solicitud
     form = SolicitudForm
-    fields = ("coment", 
+    fields = ("coment",
             "idInstituto",
             "numeroControl",
             "idStatus",
@@ -142,18 +210,16 @@ class MateriaSolicitadaListView(ListView):
 
 class MateriaSolicitdadCreateView(CreateView):
     model = MateriaSolicitada
-    form = MateriaSolicitadaForm
-    fields = ('idSolicitud','idMateria','idInstituto','idCarrera','calif')
+    form_class = MateriaSolicitadaForm
     success_url = reverse_lazy('materia_changelist')
 
 
 class MateriaSolicitdadUpdateView(UpdateView):
     model = MateriaSolicitada
-    form = MateriaSolicitadaForm
-    fields = ('idSolicitud','idMateria','idInstituto','idCarrera','calif')
+    form_class = MateriaSolicitadaForm
     success_url = reverse_lazy('materia_changelist')
 
 def load_materias(request):
-    materia_solicitada_id = request.GET.get('idMateria')
-    materias = Materia.objects.filter(materia_solicitada_id=materia_solicitada_id).orderby('idSolicitud')
+    carrera_id = request.GET.get('idCarrera')
+    materias = Materia.objects.filter(carrera_id=carrera_id).orderby('materia')
     return render(request, 'simel/materia_dropdown_list_options.html', {'materias': materias})

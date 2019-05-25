@@ -203,7 +203,7 @@ class Solicitud(models.Model):
     idAcademia = models.ForeignKey(Academia, verbose_name=("id academia"), on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.coment
+        return (self.id)
 
     def __unicode__(self):
         return self.numeroControl 
