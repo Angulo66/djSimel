@@ -41,7 +41,7 @@ class MateriasSolAdmin(admin.ModelAdmin):
 class SolicitudAdmin(admin.ModelAdmin):
     list_display = ('coment', 'numeroControl','fechaSolic',)
     list_filter = ('idInstituto', 'idStatus','fechaSolic')
-    date_hierarchy = 'fechaSolic' 
+    date_hierarchy = ('fechaSolic')
 
 admin.site.register(Plan)
 admin.site.register(Carrera, CarreraAdmin)

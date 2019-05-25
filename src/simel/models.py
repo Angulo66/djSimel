@@ -195,6 +195,7 @@ class Status(models.Model):
 
 class Solicitud(models.Model):
     fechaSolic = models.DateField(("fecha de registro"), auto_now=True, auto_now_add=False)
+    horaSolic = models.TimeField(("Hora"), auto_now=True, auto_now_add=False)
     coment = models.CharField(("comentario"), max_length=320, null=True, blank=True)
     idInstituto = models.ForeignKey(Instituto, verbose_name=("instituto"), on_delete=models.CASCADE)
     numeroControl = models.ForeignKey(Alumno, verbose_name=("numero de control"), on_delete=models.CASCADE)
@@ -203,14 +204,11 @@ class Solicitud(models.Model):
     idAcademia = models.ForeignKey(Academia, verbose_name=("id academia"), on_delete=models.CASCADE)
 
     def __str__(self):
-        return (self.id)
-
-    def __unicode__(self):
-        return self.numeroControl 
+        return str(self.id)
 
     def get_absolute_url(self):
         return reverse("solicitud_changelist", kwargs={"pk": self.pk})
-       
+     
 
 class Movimiento(models.Model):
     idSolicitud = models.ForeignKey(Solicitud, verbose_name=("id solicitud"), on_delete=models.CASCADE)
@@ -225,3 +223,6 @@ class MateriaSolicitada(models.Model):
     idInstituto = models.ForeignKey(Instituto, verbose_name=("id instituto"), on_delete=models.CASCADE)
     idCarrera = models.ForeignKey(Carrera, verbose_name=("id carrera"), on_delete=models.CASCADE)
     calif = models.DecimalField(("calificacion"), max_digits=5, decimal_places=2)
+    
+    def __str__(self):
+        return str(self.id)
