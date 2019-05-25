@@ -157,7 +157,7 @@
             {% if user.is_staff %}
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false"" >
+                aria-haspopup="true" aria-expanded="false" >
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">
@@ -643,9 +643,6 @@
   <!-- Page level plugins -->
   <script src="{% static 'simel/vendor/chart.js/Chart.min.js' %}"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'simel/js/demo/chart-area-demo.js' %}"></script>
-
 </body>
 
 </html>
@@ -689,6 +686,7 @@ var myPieChart = new Chart(ctx, {
 });
 
 console.log({{ array }})
+console.log({{ date }})
 
 </script>
 
@@ -742,7 +740,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: {{ array }},
+      data: {{ date }},
     }],
   },
   options: {
@@ -811,7 +809,6 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
-
 console.log({{ array }})
 
 </script>

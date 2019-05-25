@@ -11,6 +11,7 @@ from .models import (Alumno, Materia, MateriaSolicitada, Solicitud,
 
 obj = Solicitud.objects
 
+
 # COUNT carreras departamento
 
 sisCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa "+
@@ -32,6 +33,10 @@ mechCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud s
 eneCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Energias Renovables\'")
 ambCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Ambiental\'")
 empCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Gestion Empreserial\'")
+soldate = obj.raw("SELECT 1 as id, count(case WHEN strftime('%m',fechaSolic)='01' then 1 end) as enero,count(case WHEN strftime('%m',fechaSolic)='02' then 1 end) as febrero,count(case WHEN strftime('%m',fechaSolic)='03' then 1 end) as marzo,count(case WHEN strftime('%m',fechaSolic)='04' then 1 end) as abril,count(case WHEN strftime('%m',fechaSolic)='05' then 1 end) as mayo from simel_solicitud")
+datecount =[]
+for a in soldate:
+    datecount=[a.enero,a.febrero,a.marzo,a.abril,a.mayo]
 
 
 # Tablero view
@@ -80,7 +85,7 @@ def tablero(request):
     for a in is_academia:
         auth_academia = a.existe is not 0 # False is 0
 
-    p = obj.filter(idStatus=3).count()
+    p = obj.filter(idStatus=2).count()
     f = obj.filter(idStatus=5).count()
     r = obj.filter(idStatus=4).count()
 
@@ -100,6 +105,7 @@ def tablero(request):
         "alert_count": obj.all().count(),
 
         'array': [p, f, r],
+        'date':datecount,
 
         "contS": sisCont, "contEl": elcCont, "contEr": eneCont,
         "contT": ticsCont, "contI": indCont, "contA": ambCont,
@@ -211,6 +217,7 @@ def solicitud_detail(request, id=None):
 def solicitudes(request):
     solcoord = obj.raw("SELECT 1 as id, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id WHERE au.username='{}'".format(request.user.username))
     solicitud = obj.raw("SELECT 1 as id, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id")
+    
     context = {
         "solicitud": solicitud,
         "coordS": solcoord
