@@ -205,7 +205,7 @@
                       <th>Numero de Control</th>
                       <th>Nombre</th>
                       <th>Carrera</th>
-                      <th>Convocatoria</th>
+                      <th>Instituto</th>
                       <th>Fecha de Solicitud</th>
                       <th>Status</th>
                     </tr>
@@ -215,7 +215,7 @@
                       <th>Numero de Control</th>
                       <th>Nombre</th>
                       <th>Carrera</th>
-                      <th>Convocatoria</th>
+                      <th>Instituto</th>
                       <th>Fecha de Solicitud</th>
                       <th>Status</th>
                     </tr>
@@ -225,11 +225,11 @@
                     {% for t in solicitud %}
                     <tr>
                       <td>{{ t.numControl }}</td>
-                      <td>{{ t.nombre }}</td>
-                      <td>{{ t.nomcarrera }}</td>
+                      <td>{{ t.alumno }}</td>
+                      <td>{{ t.carrera }}</td>
                       <td>{{ t.instituto }}</td>
                       <td>{{ t.fechaSolic }}</td>
-                      <td>{{ t.descStat }}</td>
+                      <td>{{ t.status }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>

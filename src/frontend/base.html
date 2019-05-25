@@ -10,8 +10,6 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SIMEL - Sistema Integral de Movilidad Estudiantil</title>
-
   <!-- Custom fonts for this template-->
   <link href="{% static 'simel/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
   <link
@@ -32,7 +30,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
         <div class="sidebar-brand-icon rotate-n-15">
         </div>
         {% if user.is_authenticated %}
@@ -40,7 +38,7 @@
         {% endif %}
       </a>
 
-      <!-- Jefatura -->
+<!-- jefatura navlinks -->
       {% if user.is_superuser or user.is_staff %}
 
       <li class="nav-item active">
@@ -55,6 +53,9 @@
           <span>Solicitudes</span></a>
       </li>
 
+<!-- end of jefatura navlinks-->
+
+<!-- escolares navlinks-->
       {% elif escolar %}
       <li class="nav-item active">
           <a class="nav-link" href="{% url 'tablero' %}">
@@ -63,11 +64,14 @@
         </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'servicio' % ">
+        <a class="nav-link" href="{% url 'capturar_list' %}">
           <i class="fas fa-fw fa-table"></i>
-          <span>Calificar Materias</span></a>
+          <span>Capturar Solicitudes</span></a>
       </li>
 
+<!-- end of escolares navlinks-->
+
+<!-- academia navlinks -->
       {% elif academia %}
       <li class="nav-item active">
           <a class="nav-link" href="{% url 'tablero' %}">
@@ -76,11 +80,11 @@
         </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'servicio' %}">
+        <a class="nav-link" href="{% url 'convalidar_list' %}">
           <i class="fas fa-fw fa-table"></i>
           <span>Validar Materias</span></a>
       </li>
-
+<!-- end of academia navlinks -->
       {% else %}
 
       <li class="nav-item active">
@@ -150,21 +154,21 @@
               </div>
             </li>
 
-            <!-- Nav Item - Alerts -->
+            {% if user.is_staff %}
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+                aria-haspopup="true" aria-expanded="false"" >
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">
-                  {{ last_count }}
+                  {{ alert_count }}
                 </span>
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
-                  Alertas
+                  Notificaciones
                 </h6>
                 {% for a in last %}
                 <a class="dropdown-item d-flex align-items-center" href="#">
@@ -176,15 +180,14 @@
                   <div>
                     <div class="small text-gray-500">{{ a.fechaSolic }} {{a.horaSolic}}</div>
                     
-                      {{ a.numeroControl }} a mandado solicitud
+                      {{ a.numeroControl }} a mandado solicitud.
                    
                   </div>
                 </a>
                 {% endfor%}
-                <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar Todas Las Alertas</a>
+                <a class="dropdown-item text-center small text-gray-500" href="#"></a>
               </div>
             </li>
-
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
@@ -212,7 +215,7 @@
                 <a class="dropdown-item text-center small text-gray-500" href="#">Leer Mas Mensajes</a>
               </div>
             </li>
-
+            {% endif %}
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- informacion del usuario -->
@@ -240,7 +243,9 @@
         <!-- Begin Page Content -->
 {% if user.is_staff or user.is_superuser %}
         <div class="container-fluid">
-          <!-- Jefatura -->
+
+
+<!-- Solicitudes Totales -->
           <div class="row">
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
@@ -265,7 +270,8 @@
                 </div>
               </div>
             </div>
-
+<!-- ============================= -->
+<!-- Solicitudes Finalizados -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
@@ -299,8 +305,8 @@
                 </div>
               </div>
             </div>
-
-            <!-- Pending Requests Card Example -->
+<!--====================================== -->
+<!-- Solicitudes pendientes -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
@@ -325,7 +331,8 @@
                 </div>
               </div>
             </div>
-
+<!-- =========================== -->
+<!-- Solicitudes rechazadas -->
             <div class="col-xl-3 col-md-6 mb-4">
               <div class="card border-left-danger shadow h-100 py-2">
                 <div class="card-body">
@@ -349,8 +356,9 @@
                 </div>
               </div>
             </div>
-
+<!-- ==================================== -->
           </div>
+<!-- ================================================ -->
           <!-- Content Row -->
 
           <div class="row">

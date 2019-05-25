@@ -136,13 +136,13 @@ class Alumno(models.Model):
 
 
 class Aduedo(models.Model):
-    numControl = models.ForeignKey(Alumno, verbose_name=("Alumno"), on_delete=models.CASCADE)
+    numControl = models.ForeignKey(Alumno, verbose_name=("numero de control"), on_delete=models.CASCADE)
     creditosAcum = models.IntegerField(("creditos acumulados"))
-    adeudo = models.BinaryField(("aduedo de libro"), default=0)
+    adeudo = models.BinaryField(("aduedo de libro"))
     cantMov = models.IntegerField(("cantidad de movilidades cursados"))
     cursoVerano = models.BinaryField(("curso de verano"))
     coment = models.CharField(("commentario"), max_length=320)
-    matRC = models.IntegerField(("materias cursadando en RC"), default=0)
+    matRC = models.IntegerField(("materias cursadando en RC"))
     eligible = models.BooleanField(("Es eligible"), default=False)
 
 

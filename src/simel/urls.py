@@ -7,13 +7,16 @@ urlpatterns = [
     path('tablero', views.tablero, name='tablero'),
     path('solicitud', views.solicitud, name='solicitud'),
     path('solicitudes', views.solicitudes, name='solicitudes'),
-    path('servicio', views.servicio, name='servicio')
+    path('convalidar', views.convalidarView, name='convalidar_list')
 ]
 
 urlpatterns += [
     path('simel/solicita',views.create_solicitud, name='solicita_post'),
 ]
-
+# Actualizar
+urlpatterns += [
+    path('simel/actualiza',views.modificarSolicitud, name='modifica_post'),
+]
 # Materia Solicitada Mixins
 
 urlpatterns += [
@@ -22,6 +25,10 @@ urlpatterns += [
     path('materia/<int:pk>', views.MateriaSolicitdadUpdateView.as_view(), name='materia_change')
 ]
 
+urlpatterns += [
+    path('capturas', views.capturarView, name='capturar_list'),
+    path('capturas/<int:pk>', views.capturarUpdate, name='capturar_form')
+]
 
 
 # Solicitud Mixins
