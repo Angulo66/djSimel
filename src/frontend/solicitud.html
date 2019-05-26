@@ -388,7 +388,7 @@
                     },
                     success: function () {
                         alert('Su Solicitud Fue enviada!')
-                        location.reload()
+                        location.href = "{% url 'solicitud_sent' %}"
                     }
                 });
             } else

@@ -68,6 +68,22 @@ def capturarUpdate(request):
     return render(request, template, context)
 
 
+
+def solicitudEnviado(request):
+    template = 'sent_status.html'
+    context = {
+
+    }
+    return render(request, template, context)
+
+
+def solicitudStatus(request):
+    template = 'solicitud_status.html'
+    context = {
+
+    }
+    return render(request, template, context)
+
 def tablero(request): 
     count_status_coord = obj.raw("SELECT 1 as id, COUNT(*) as total, "+
     "COUNT( case when st.status='Finalizado' then st.status end) as finalizado, "+
