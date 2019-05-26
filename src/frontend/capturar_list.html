@@ -196,6 +196,8 @@
           <div class="row">
             
               {% for a in solicitudes %}
+              
+              {% if a.status == "Aceptado" %}
               <div class="col-sm-6">
                 <div class="card">
                   <div class="card-body">
@@ -207,6 +209,7 @@
                   </div>
                 </div>
               </div>
+              {% endif %}
               {% endfor %}
             </div>
         </div>
