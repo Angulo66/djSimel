@@ -35,8 +35,14 @@ ambCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss
 empCont = obj.raw("SELECT 1 as id, COUNT(*) as contador  FROM simel_solicitud ss INNER JOIN simel_alumno sa ON ss.numerocontrol_id=sa.id INNER JOIN simel_carrera sc ON sc.id=sa.idcarrera_id WHERE sc.nombre=\'Ing. Gestion Empreserial\'")
 soldate = obj.raw("SELECT 1 as id, count(case WHEN strftime('%m',fechaSolic)='01' then 1 end) as enero,count(case WHEN strftime('%m',fechaSolic)='02' then 1 end) as febrero,count(case WHEN strftime('%m',fechaSolic)='03' then 1 end) as marzo,count(case WHEN strftime('%m',fechaSolic)='04' then 1 end) as abril,count(case WHEN strftime('%m',fechaSolic)='05' then 1 end) as mayo from simel_solicitud")
 datecount =[]
+contadores =[sisCont, elcCont, eneCont,ticsCont,indCont,ambCont,bioCont, mecCont, empCont,eleCont, mechCont]
+porcent=[]
 for a in soldate:
     datecount=[a.enero,a.febrero,a.marzo,a.abril,a.mayo]
+for a in contadores:
+    for b in a:
+        t=(b.contador*100)/obj.all().count()
+        porcent.append(t)
 
 
 # Tablero view
@@ -106,11 +112,21 @@ def tablero(request):
 
         'array': [p, f, r],
         'date':datecount,
-
         "contS": sisCont, "contEl": elcCont, "contEr": eneCont,
         "contT": ticsCont, "contI": indCont, "contA": ambCont,
         "contB": bioCont, "contM": mecCont, "contEm": empCont,
-        "contE": eleCont, "contMc": mechCont
+        "contE": eleCont, "contMc": mechCont,
+        'psistemas':porcent[0],
+        'pelectronic':porcent[1],
+        'pener':porcent[2],
+        'ptics':porcent[3],
+        'pind':porcent[4],
+        'pamb':porcent[5],
+        'pbio':porcent[6], 
+        'pmec':porcent[7], 
+        'pemp':porcent[8],
+        'pelc':porcent[9], 
+        'pmecan':porcent[10]
     }
     return render(request, 'base.html', context)
 
