@@ -137,23 +137,19 @@
                     <!-- Content Row -->
                     <div class="row">
                         <div class="col-lg-6 mb-4">
-                            {% for s in solicitud %}
-                            {% if s.status == 'Enviado'%}
-                            <div class="card text-center">
-                                <div class="card-header">
-                                    {{ s.alumno }} {{ s.apellido }}
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ s.carrera }}</h5>
-                                    <p class="card-text">{{ s.instituto }}</p>
-                                    <p class="card-text">Comentario: {{ s.comentario }}</p>
-                                    <a href="" class="btn btn-primary">Convalidar</a>
-                                </div>
-                                <div class="card-footer text-muted">
-                                </div>
-                            </div>
-                           {% endif %}
-                           {% endfor %}
+                            <tbody>
+                                {% for t in solicitud %}
+                                <tr>
+                                    <td class='clickable-row' data-href="{% url 'solicitud_detail' id=t.idsoli %}">
+                                        {{ t.numControl }}</td>
+                                    <td>{{ t.alumno }}</td>
+                                    <td>{{ t.carrera }}</td>
+                                    <td>{{ t.instituto }}</td>
+                                    <td>{{ t.fecha }}</td>
+                                    <td>{{ t.status }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
                         </div>
                     </div>
 

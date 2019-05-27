@@ -1,4 +1,6 @@
 {% load static %}
+{% load crispy_forms_tags %}
+
 <!doctype html>
 <html lang="en">
 
@@ -50,9 +52,11 @@
     </div>
 
     {% csrf_token %}
-    {{ form.as_p }}
-
-    <button class="btn-primary" type="submit" value="login">Ingresar</button>
+    {{ form.username|as_crispy_field }}
+    {{ form.password|as_crispy_field }}
+    <div class="text-center mb-4">
+    <button class="btn btn-primary" type="submit" value="login">Ingresar</button>
+    </div>
     <input type="hidden" name="text" value="{{ next }}"/>
     <p><a href="{% url 'password_reset' %}">Olvido su contrase&ntilde;a</a></p>
     <p class="mt-5 mb-3 text-muted text-center"> Equipo Movilidad Eduardo, Francisco, & Helder - IS</p>

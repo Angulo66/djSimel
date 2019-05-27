@@ -196,26 +196,32 @@ class Status(models.Model):
 class Solicitud(models.Model):
     fechaSolic = models.DateField(("fecha de registro"), auto_now=True, auto_now_add=False)
     horaSolic = models.TimeField(("Hora"), auto_now=True, auto_now_add=False)
-    coment = models.CharField(("comentario"), max_length=320, null=True, blank=True)
+    coment = models.CharField(("comentario"), max_length=320, null=True, blank=True, default="Creo Solicitud")
     idInstituto = models.ForeignKey(Instituto, verbose_name=("instituto"), on_delete=models.CASCADE)
     numeroControl = models.ForeignKey(Alumno, verbose_name=("numero de control"), on_delete=models.CASCADE)
     idStatus = models.ForeignKey(Status, verbose_name=("status"), on_delete=models.CASCADE)
     idServicio = models.ForeignKey(ServicioEscolar, verbose_name=("id servicio escolar"), on_delete=models.CASCADE)
     idAcademia = models.ForeignKey(Academia, verbose_name=("id academia"), on_delete=models.CASCADE)
 
+    def __unicode_(self):
+        return self.id
+
     def __str__(self):
         return str(self.id)
 
     def get_absolute_url(self):
-        return reverse("solicitud_changelist", kwargs={"pk": self.pk})
+        return reverse("solicitud_detail", kwargs={"id": self.id})
      
 
 class Movimiento(models.Model):
     idSolicitud = models.ForeignKey(Solicitud, verbose_name=("id solicitud"), on_delete=models.CASCADE)
+    coment = models.CharField(("comentario"), max_length=150, default="Movimiento")
     fecha = models.DateField(("fecha de movimiento"), auto_now=True, auto_now_add=False)
     usuario = models.ForeignKey(User, verbose_name=("id usuario"), on_delete=models.CASCADE)
     idStatus = models.ForeignKey(Status, verbose_name=("id status"), on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.coment
 
 class MateriaSolicitada(models.Model):
     idSolicitud = models.ForeignKey(Solicitud, verbose_name=("id solicitud"), on_delete=models.CASCADE)
@@ -225,4 +231,4 @@ class MateriaSolicitada(models.Model):
     calif = models.DecimalField(("calificacion"), max_digits=5, decimal_places=2)
     
     def __str__(self):
-        return str(self.id)
+        return str(self.id)    

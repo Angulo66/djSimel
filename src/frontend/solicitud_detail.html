@@ -370,7 +370,8 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                        {% if user.is_staff or user.is_superuser %}
+                        {% if user.is_staff or user.is_superuser  %}
+                          {% if instance.idStatus.id == 2 %}
                             <hr class="my-4">
                             {% if eligible %}
                             <p>El alumno no tiene aduedos.</p> <i class="em em---1"></i>
@@ -379,6 +380,7 @@
                             <p>El alumno tiene adeudos!</p>
                             <a class="btn btn-danger" href="#" role="button" onclick="rechazar();">Rechazar Solicitud</a>
                             {% endif %}
+                          {% endif %}
                         {% endif %}
                     </div>
             

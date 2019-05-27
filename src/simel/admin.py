@@ -36,12 +36,17 @@ class MateriasAdmin(admin.ModelAdmin):
 
 class MateriasSolAdmin(admin.ModelAdmin):
     list_display = ('idCarrera','idInstituto','idSolicitud','idMateria','calif')
-    list_filter = ('idCarrera', 'idInstituto','idSolicitud')   
+    list_filter = ('idCarrera', 'idSolicitud', 'idInstituto')   
 
 class SolicitudAdmin(admin.ModelAdmin):
     list_display = ('coment', 'numeroControl','fechaSolic',)
-    list_filter = ('idInstituto', 'idStatus','fechaSolic')
+    list_filter = ('idInstituto', 'idStatus', 'fechaSolic')
     date_hierarchy = ('fechaSolic')
+
+class MovimientoAdmin(admin.ModelAdmin):
+    list_display = ('idSolicitud', 'idStatus', 'fecha')
+    list_filter = ('idSolicitud', 'idStatus')
+    date_hierarchy = ('fecha')
 
 admin.site.register(Plan)
 admin.site.register(Carrera, CarreraAdmin)
@@ -57,7 +62,7 @@ admin.site.register(MateriasDelAlumno, MateriasAdmin)
 admin.site.register(MateriaSolicitada, MateriasSolAdmin)
 
 admin.site.register(Solicitud, SolicitudAdmin)
-admin.site.register(Movimiento)
+admin.site.register(Movimiento, MovimientoAdmin)
 admin.site.register(Status)
 admin.site.register(Aduedo, AdeudoAdmin)
 

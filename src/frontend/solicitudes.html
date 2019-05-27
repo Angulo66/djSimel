@@ -47,13 +47,13 @@
 
       <li class="nav-item">
           <a class="nav-link" href="{% url 'tablero' %}">
-            <i class="fas fa-fw fa-table"></i>
+            <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Tablero</span></a>
         </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item active">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{% url 'solicitudes' %}">
           <i class="fas fa-fw fa-table"></i>
           <span>Solicitudes</span></a>
       </li>
@@ -109,70 +109,10 @@
               </div>
             </li>
 
-            <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">{int}</span>
-              </a>
-              <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                  Alertas
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-bell text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">{ fecha }</div>
-                    { alerta }
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar Todas Las Alertas</a>
-              </div>
-            </li>
-
-            <!-- Nav Item - Messages -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">{int}</span>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="messagesDropdown">
-                <h6 class="dropdown-header">
-                  Mensajes
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">{ mensaje }</div>
-                    <div class="small text-gray-500"> { usuario } · { fecha } </div>
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Leer Mas Mensajes</a>
-              </div>
-            </li>
-
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user. }}</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }}</span>
                 <img class="img-profile rounded-circle" src="{% static 'simel/img/user.png' %}">
               </a>
 
@@ -200,8 +140,7 @@
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-
-                    <tr class="table-row" style="cursor:pointer;">
+                    <tr>
                       <th>Numero de Control</th>
                       <th>Nombre</th>
                       <th>Carrera</th>
@@ -210,25 +149,15 @@
                       <th>Status</th>
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr "table-row" style="cursor:pointer;">
-                      <th>Numero de Control</th>
-                      <th>Nombre</th>
-                      <th>Carrera</th>
-                      <th>Instituto</th>
-                      <th>Fecha de Solicitud</th>
-                      <th>Status</th>
-                    </tr>
-                  </tfoot>
                   {% if user.is_superuser %}
                   <tbody>
                     {% for t in solicitud %}
                     <tr>
-                      <td>{{ t.numControl }}</td>
+                      <td class='clickable-row' data-href="{% url 'solicitud_detail' id=t.idsoli %}"> {{ t.numControl }}</td>
                       <td>{{ t.alumno }}</td>
                       <td>{{ t.carrera }}</td>
                       <td>{{ t.instituto }}</td>
-                      <td>{{ t.fechaSolic }}</td>
+                      <td>{{ t.fecha }}</td>
                       <td>{{ t.status }}</td>
                     </tr>
                     {% endfor %}
@@ -238,12 +167,12 @@
                   {% if user.is_staff %}
                   <tbody>
                     {% for t in coordS %}
-                    <tr>
-                      <td>{{ t.numControl }}</td>
+                    <tr class="table-row">
+                      <td class='clickable-row' data-href="{% url 'solicitud_detail' id=t.idsoli %}"> {{ t.numControl }}</td>
                       <td>{{ t.alumno }}</td>
                       <td>{{ t.carrera }}</td>
                       <td>{{ t.instituto }}</td>
-                      <td>{{ t.fechaSolic }}</td>
+                      <td>{{ t.fecha }}</td>
                       <td>{{ t.status }}</td>
                     </tr>
                     {% endfor %}
@@ -310,7 +239,26 @@
   <!-- Page level plugins -->
   <script src="{% static 'simel/vendor/datatables/jquery.dataTables.min.js' %}"></script>
   <script src="{% static 'simel/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <script type="text/javascript">
+  $(document).ready(function($) {
+    $(".table-row").click(function() {
+       var x= (this.id);
+       console.log(x); 
+    })});
 
+    jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+          window.location = $(this).data("href");
+      });
+  });
+
+  </script>
+    <style type="text/css">
+    .table-row{
+      cursor:pointer;
+      }
+      tr:hover {background-color:#f5f5f5;}
+    </style>
   <!-- Page level custom scripts -->
   <script src="{% static 'simel/js/demo/datatables-demo.js' %}"></script>
 

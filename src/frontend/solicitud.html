@@ -40,9 +40,11 @@
                 {% endif %}
             </a>
 
+            <hr class="sidebar-divider my-0">
+
             <li class="nav-item ">
                 <a class="nav-link" href="{% url 'tablero' %}">
-                    <i class="fas fa-fw fa-list"></i>
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Tablero</span></a>
             </li>
 
@@ -51,6 +53,12 @@
                     <i class="fas fa-fw fa-list"></i>
                     <span>Crear Solicitud</span></a>
             </li>
+
+            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'solicitud_detail' id=1%}">
+                        <i class="fas fa-fw fa-list"></i>
+                        <span>Ver Solicitud</span></a>
+                </li>
 
 
             <!-- Divider -->
@@ -72,7 +80,6 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <h1>Solicitud</h1>
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>

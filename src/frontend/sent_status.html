@@ -38,10 +38,15 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index-estudiante.html">
-                    <i class="fas fa-fw fa-list"></i>
-                    <span>Inicio</span></a>
+                <a class="nav-link" href="{% url 'tablero' %}">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Tablero</span></a>
             </li>
+           <li class="nav-item">
+                <a class="nav-link" href="{% url 'solicitud_status' %}">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Ver Solicitud</span></a>
+             </li>
 
 
             <!-- Divider -->
@@ -117,9 +122,9 @@
 
                 </nav>
                 <!-- End of Topbar -->
-                <h4 align="center">ESTADO</h4>
+                <h1 align="center">Estado</h1>
                 <div align="center" class="row-lg-8 rowmd-6 ">
-                    <img src="https://img.icons8.com/flat_round/512/000000/checkmark.png">
+                    <img src="https://img.icons8.com/flat_round/512/000000/checkmark.png" width="300" height="300">
                     <p class="text-success" align="center">Tu Solicitud Fue Enviada Con Exito</p>
                     <p class="text-info" align="center">En estos momentos comienza el tramite</p>
 
@@ -175,7 +180,7 @@
                 <div class="modal-body">Asegurese de haber guardado cambios hecho antes de cerrar su session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="login.html">Cerrar Session</a>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Session</a>
                 </div>
             </div>
         </div>

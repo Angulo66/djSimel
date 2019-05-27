@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 # Create your views here.
-from django.shortcuts import (get_object_or_404, render, reverse)
+from django.shortcuts import (get_object_or_404, get_list_or_404 , render, reverse)
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
 from django.contrib.auth.models import User
-from .forms import MateriaSolicitadaForm, SolicitudForm
-from .models import (Alumno, Materia, MateriaSolicitada, Solicitud,
+from .forms import SolicitudForm, MateriaSolicitadaForm
+from .models import (Alumno, Materia, MateriaSolicitada, Solicitud, Aduedo,
                      Status, Academia, ServicioEscolar, Instituto, Movimiento)
 
 obj = Solicitud.objects
@@ -39,9 +39,12 @@ contadores =[sisCont, elcCont, eneCont,ticsCont,indCont,ambCont,bioCont, mecCont
 porcent=[]
 for a in soldate:
     datecount=[a.enero,a.febrero,a.marzo,a.abril,a.mayo]
+total=obj.all().count()
 for a in contadores:
     for b in a:
-        t=(b.contador*100)/obj.all().count()
+        t=0
+        if(total!=0):
+            t=(b.contador*100)/total
         porcent.append(t)
 
 
@@ -49,22 +52,60 @@ for a in contadores:
 
 def capturarView(request):
     template = 'capturar_list.html'
-    solicitud = obj.raw("SELECT 1 as id, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sa.apellido "+
-    "as apellido ,sp.coment as comentario, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au "+
-    "INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id "+
-    "INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id "+
-    "INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id")
+    solicitud = obj.raw("SELECT 1 as id,sp.id as idsoli, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id where sp.idstatus_id=5")
     context = {
-        "solicitudes": solicitud,
+        "solicitud": solicitud
     }
     return render(request, template, context)
 
 
-def capturarUpdate(request):
+def capturaDetail(request, id=None):
     template = 'capturar_form.html'
-    context = {
+    instance = get_object_or_404(Solicitud, id=id)
+    adeudo = get_object_or_404(Aduedo, numControl=instance.numeroControl)
+    materias = MateriaSolicitada.objects.filter(idSolicitud=instance.id)
+    movimientos = Movimiento.objects.filter(idSolicitud=instance.id)
+    
+    for m in materias:
+        print("hola")
+    eligible = False
+    if adeudo.eligible:
+        eligible = True
 
-    }
+    context = {
+        "title": instance.coment,
+        "instance": instance,
+        "adeudo": adeudo,
+        "eligible": eligible,
+        "materias": materias,
+        "movimientos": movimientos,
+        }
+    print("Solicitud detail view")
+    return render(request, template, context)
+
+
+def solicitudDetail(request, id=None):
+    template = 'solicitud_detail.html'
+    instance = get_object_or_404(Solicitud, id=id)
+    adeudo = get_object_or_404(Aduedo, numControl=instance.numeroControl)
+    materias = MateriaSolicitada.objects.filter(idSolicitud=instance.id)
+    movimientos = Movimiento.objects.filter(idSolicitud=instance.id)
+    
+    for m in materias:
+        print("hola")
+    eligible = False
+    if adeudo.eligible:
+        eligible = True
+
+    context = {
+        "title": instance.coment,
+        "instance": instance,
+        "adeudo": adeudo,
+        "eligible": eligible,
+        "materias": materias,
+        "movimientos": movimientos,
+        }
+    print("Solicitud detail view")
     return render(request, template, context)
 
 
@@ -72,15 +113,12 @@ def capturarUpdate(request):
 def solicitudEnviado(request):
     template = 'sent_status.html'
     context = {
-
     }
     return render(request, template, context)
-
 
 def solicitudStatus(request):
     template = 'solicitud_status.html'
     context = {
-
     }
     return render(request, template, context)
 
@@ -110,8 +148,9 @@ def tablero(request):
     p = obj.filter(idStatus=2).count()
     f = obj.filter(idStatus=5).count()
     r = obj.filter(idStatus=4).count()
+ 
+ 
 
-    
     context = {
         "solicitudes": obj.all().count(),
         "rechazados": r,
@@ -149,7 +188,7 @@ def tablero(request):
 
 def convalidarView(request):
     template = 'convalidar.html'
-    solicitud = obj.raw("SELECT 1 as id, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sa.apellido as apellido ,sp.coment as comentario, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id")
+    solicitud = obj.raw("SELECT 1 as id,sp.id as idsoli, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id")
     context = {
         "solicitud": solicitud
     }
@@ -226,7 +265,7 @@ def create_solicitud(request):
 
 def modificarSolicitud(request):
     if request.method =='POST':
-        soli=Solicitud.objects.all(pk=request.POST['solicitud'])
+        soli=Solicitud.objects.get(pk=request.POST['solicitud'])
         soli.idStatus=Status.objects.get(pk=request.POST['status'])
         soli.save()
         m = Movimiento(
@@ -247,8 +286,8 @@ def solicitud_detail(request, id=None):
 
 
 def solicitudes(request):
-    solcoord = obj.raw("SELECT 1 as id, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id WHERE au.username='{}'".format(request.user.username))
-    solicitud = obj.raw("SELECT 1 as id, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id")
+    solcoord = obj.raw("SELECT 1 as id,sp.id as idsoli, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id WHERE au.username='{}'".format(request.user.username))
+    solicitud = obj.raw("SELECT 1 as id,sp.id as idsoli, sa.numControl, sc.nombre, ss.nombre as carrera, sa.nombre as alumno, sp.fechaSolic as fecha, si.instituto, st.status as status FROM auth_user au INNER JOIN simel_coordinador sc ON au.id=sc.idUsuario_id INNER JOIN simel_carrera ss ON ss.idCoordinador_id=sc.id INNER JOIN simel_alumno sa ON sa.idCarrera_id=ss.id INNER JOIN simel_solicitud sp ON sp.numeroControl_id=sa.id INNER JOIN simel_instituto si ON si.id=sp.idInstituto_id INNER JOIN simel_status st ON st.id=sp.idStatus_id")
     
     context = {
         "solicitud": solicitud,
@@ -263,8 +302,9 @@ class SolicitudListView(ListView):
     context_object_name = 'solicitud_changelist'
 
 
+
 class SolicitudCreateView(LoginRequiredMixin , CreateView):
-    model = Solicitud
+    model = MateriaSolicitada
     fields = '__all__'
 
     def get_initial(self):
@@ -276,7 +316,7 @@ class SolicitudCreateView(LoginRequiredMixin , CreateView):
         }
 
     def get_success_url(self):
-        return reverse('solicitud_changelist')        
+        return reverse('solicitud_detail')        
 
 
 class SolicitudUpdateView(UpdateView):

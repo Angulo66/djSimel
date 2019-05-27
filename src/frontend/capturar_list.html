@@ -1,5 +1,5 @@
 {% load static %}
-
+{% if user.is_authenticated %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+
+  <title>SIMEL - Solicitudes </title>
 
   <!-- Custom fonts for this template -->
   <link href="{% static 'simel/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
@@ -43,19 +45,17 @@
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item -->
-      <hr class="sidebar-divider my-0">
-
-      <li class="nav-item ">
-        <a class="nav-link" href="{% url 'tablero' %}">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tablero</span></a>
-      </li>
-
       <li class="nav-item">
-        <a class="nav-link active" href="">
+          <a class="nav-link" href="{% url 'tablero' %}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Tablero</span></a>
+        </li>
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item active">
+        <a class="nav-link" href="">
           <i class="fas fa-fw fa-table"></i>
-          <span>Capturar Solicitudes</span></a>
+          <span>Capturar Calificaciones</span></a>
       </li>
 
       <!-- Divider -->
@@ -109,71 +109,11 @@
               </div>
             </li>
 
-            <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">{int}</span>
-              </a>
-              <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                  Alertas
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-bell text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">{ fecha }</div>
-                    { alerta }
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar Todas Las Alertas</a>
-              </div>
-            </li>
-
-            <!-- Nav Item - Messages -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">{int}</span>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="messagesDropdown">
-                <h6 class="dropdown-header">
-                  Mensajes
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">{ mensaje }</div>
-                    <div class="small text-gray-500"> { usuario } · { fecha } </div>
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Leer Mas Mensajes</a>
-              </div>
-            </li>
-
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.username }}</span>
-                <img class="img-profile rounded-circle" src="{ docente.foto }">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }}</span>
+                <img class="img-profile rounded-circle" src="{% static 'simel/img/user.png' %}">
               </a>
 
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -189,84 +129,124 @@
         </nav>
         <!-- End of Topbar -->
 
-
-<div class="container" >
+        <!-- Begin Page Content -->
         <div class="container-fluid">
-            <h3>Capturar Solicitudes</h3>
-          <div class="row">
-            
-              {% for a in solicitudes %}
-              
-              {% if a.status == "Aceptado" %}
-              <div class="col-sm-6">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ a.alumno }} {{ a.apellido }} - {{ a.numControl }}</h5>
-                    <strong><p class="card-text">Movilidad a {{ a.instituto }}</p></strong>
-                    <p class="card-text">{{ a.comentario }}</p>
-                    <a href="./capturas/{{ a.id }}" class="btn btn-primary">Convalidar</a>
-                    <p class="card-text">{{ a.fechaSolic }}</p>
-                  </div>
-                </div>
+          <!-- tabla de solicitudes -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Solicitudes de Movilidad</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Numero de Control</th>
+                      <th>Nombre</th>
+                      <th>Carrera</th>
+                      <th>Instituto</th>
+                      <th>Fecha de Solicitud</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for i in solicitud %}
+                      <tr>
+                        <td class='clickable-row' data-href="{% url 'solicitud_detail' id=i.idsoli %}"> 
+                          {{ i.numControl }}</td>
+                        <td>{{ i.alumno }} </td>
+                        <td>{{ i.carrera }}</td>
+                        <td>{{ i.instituto }}</td>
+                        <td>{{ i.fecha }}</td>
+                        <td>{{ i.status }}</td>
+                      </tr>
+                  </tbody>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
-              {% endif %}
-              {% endfor %}
-            </div>
-        </div>
-      </div>
-        <footer class="sticky-footer bg-white">
-          <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-              <span>SIMEL &copy; Instituto Tecnologico de Culiacan</span>
             </div>
           </div>
-        </footer>
+        </div>
 
       </div>
-      <!-- End of Content Wrapper -->
+
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>SIMEL &copy; Instituto Tecnologico de Culiacan</span>
+          </div>
+        </div>
+      </footer>
 
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- End of Content Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fas fa-angle-up"></i>
-    </a>
+  </div>
+  <!-- End of Page Wrapper -->
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Listo Para Salir?</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">Asegurese de haber guardado cambios hecho antes de cerrar su session.</div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-            <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Session</a>
-          </div>
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Listo Para Salir?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Asegurese de haber guardado cambios hecho antes de cerrar su session.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+          <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Session</a>
         </div>
       </div>
     </div>
+  </div>
 
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'simel/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'simel/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'simel/vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'simel/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'simel/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="{% static 'simel/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'simel/js/simel.min.js' %}"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="{% static 'simel/js/simel.min.js' %}"></script>
+  <!-- Page level plugins -->
+  <script src="{% static 'simel/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'simel/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <script type="text/javascript">
+  $(document).ready(function($) {
+    $(".table-row").click(function() {
+       var x= (this.id);
+       console.log(x); 
+    })});
 
-    <!-- Page level plugins -->
-    <script src="{% static 'simel/vendor/chart.js/Chart.min.js' %}"></script>
+    jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+          window.location = $(this).data("href");
+      });
+  });
 
-    <!-- Page level custom scripts -->
-    <script src="{% static 'simel/js/demo/chart-area-demo.js' %}"></script>
-    <script src="{% static 'simel/js/demo/chart-pie-demo.js' %}"></script>
+  </script>
+    <style type="text/css">
+    .table-row{
+      cursor:pointer;
+      }
+      tr:hover {background-color:#f5f5f5;}
+    </style>
+  <!-- Page level custom scripts -->
+  <script src="{% static 'simel/js/demo/datatables-demo.js' %}"></script>
+
+</body>
+
+</html>
+{% endif %}

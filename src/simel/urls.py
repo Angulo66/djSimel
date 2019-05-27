@@ -8,10 +8,11 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('solicitud', views.solicitud, name='soliciutd'),
+    path('solicitud', views.solicitud, name='solicitud'),
     path('solicitudes', views.solicitudes, name='solicitudes'),
     path('solicitud/sent', views.solicitudEnviado, name='solicitud_sent'),
-    path('solicitud/status', views.solicitudStatus, name='solicitud_status')
+    path('solicitud/status', views.solicitudStatus, name='solicitud_status'),
+    path('solicitud/<int:id>/', views.solicitudDetail, name='solicitud_detail')
 ]
 
 
@@ -35,8 +36,9 @@ urlpatterns += [
 # Escolares
 urlpatterns += [
     path('capturas', views.capturarView, name='capturar_list'),
-    path('capturas/<int:pk>', views.capturarUpdate, name='capturar_form')
+    path('capturar/<int:id>/', views.capturaDetail, name='capturar_form')
 ]
+
 
 # Academia
 urlpatterns += [

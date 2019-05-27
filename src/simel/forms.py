@@ -15,7 +15,6 @@ class SolicitudForm(forms.ModelForm):
             "idAcademia"
         ]
 
-
 class MateriaSolicitadaForm(forms.ModelForm):
     class Meta:
         model = MateriaSolicitada
@@ -26,8 +25,4 @@ class MateriaSolicitadaForm(forms.ModelForm):
             "idCarrera",
             "calif"
         ]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['idMateria'].queryset = Materia.objects.none()
 
