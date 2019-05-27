@@ -15,7 +15,6 @@ urlpatterns += [
     path('solicitud/<int:id>/', views.solicitudDetail, name='solicitud_detail')
 ]
 
-
 urlpatterns += [
     path('simel/solicita',views.create_solicitud, name='solicita_post'),
 ]
@@ -26,32 +25,14 @@ urlpatterns += [
     path('simel/actualiza',views.modificarSolicitud, name='modifica_post'),
 ]
 
-# Materia Solicitada Mixins
-urlpatterns += [
-    path('materia', views.MateriaSolicitadaListView.as_view(), name='materia_changelist'),
-    path('materia/add', views.MateriaSolicitdadCreateView, name='materia_add'),
-    path('materia/<int:pk>/', views.MateriaSolicitdadUpdateView.as_view(), name='materia_change')
-]
-
 # Escolares
 urlpatterns += [
     path('capturas', views.capturarView, name='capturar_list'),
-    path('capturar/<int:id>/', views.capturaDetail, name='capturar_form'),
-    path('subir', views.capturaCalificaciones, name='captura_calif')
+    path('capturar/<int:id>/', views.capturaDetail, name='capturar_form')
 ]
-
 
 # Academia
 urlpatterns += [
-    path('convalidar', views.convalidarView, name='convalidar_list'),
+    path('convalidar', views.solicitudes, name='convalidar_list'),
     path('convalidar/<int:id>/', views.convalidarMateria, name='convalidar_form')
 ]
-
-
-# Solicitud Mixins
-"""
-urlpatterns += [
-    path('solicitud/add', views.SolicitudCreateView.as_view(), name='solicitud_add'),
-    path('solicitud/<int:pk>', views.SolicitudUpdateView.as_view(), name='solicitud_change')
-]
-"""

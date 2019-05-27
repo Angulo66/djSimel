@@ -88,7 +88,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'convalidar_list' %}">
           <i class="fas fa-fw fa-table"></i>
-          <span>Validar Materias</span></a>
+          <span>Convalidar Materias</span></a>
       </li>
 <!-- end of academia navlinks -->
       {% else %}
@@ -561,6 +561,33 @@
 
         </div>
         <!-- /.container-fluid -->
+
+        {% elif escolar %}
+
+        <div class="container-fluid">
+          <h2></h2>
+          <main role="main" class="inner cover">
+              <h3 class="cover-heading">Bienvenido<strong> {{ user.first_name }} {{ user.last_name }} </strong> </br> al sistema de movilidad integrado
+                del Instituto Tecnologico de Culiacan.
+              </h3>
+              <p class="lead"> Correo electronico del webmaster: <a href="mailto:" >simelmaster@itculiacan.edu.mx </a></p>
+              <p class="lead"> Correo electronico del   DBA: <a href="mailto:">dbaitc@itculiacan.edu.mx </a></p>
+              </p>
+            </main>
+              </div>
+
+        {% elif academia %}
+
+        <div class="container-fluid">
+          <h2></h2>
+          <main role="main" class="inner cover">
+              <h3 class="cover-heading">Bienvenido<strong> {{ user.first_name }} {{ user.last_name }} </strong> </br> al sistema de movilidad integrado
+                del Instituto Tecnologico de Culiacan.
+              </h3>
+              <p class="lead"> Correo electronico del webmaster: <a href="mailto:" >simelmaster@itculiacan.edu.mx </a></p>
+              <p class="lead"> Correo electronico del   DBA: <a href="mailto:">dbaitc@itculiacan.edu.mx </a></p>
+            </main>
+              </div>
 
         {% else %}
 

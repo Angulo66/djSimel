@@ -1,5 +1,4 @@
 {% load static %}
-{% if user.is_authenticated %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -179,6 +178,20 @@
                   </tbody>
                   {% endif %}
 
+                  <tbody>
+                      {% for t in solicitud %}
+                      <tr class="table-row">
+                        <td class='clickable-row' data-href="{% url 'convalidar_form' id=t.idsoli %}"> {{ t.numControl }}</td>
+                        <td>{{ t.alumno }}</td>
+                        <td>{{ t.carrera }}</td>
+                        <td>{{ t.instituto }}</td>
+                        <td>{{ t.fecha }}</td>
+                        <td>{{ t.status }}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+
+
                 </table>
               </div>
             </div>
@@ -265,4 +278,3 @@
 </body>
 
 </html>
-{% endif %}

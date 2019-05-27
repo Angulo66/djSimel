@@ -1,68 +1,55 @@
-{% extends 'convalidar.html'%}
+{% extends 'index.html' %}
 {% load static %}
 
 {% block content %}
-        <!-- Begin Page Content -->
-        <form onsubmit="addMateria(event)">
-            <h4 align="center">Capturar</h4>
-            <div class="form-row">
-               <div class="form-group col-md-4">
-                <label for="inputPais">Materia</label>
-                <select id="MateriaMovilidad" class="form-control">
-                <!-- aqui poner las materias de esa solicitud -->
-                <!-- tambien validar si esa materia ya se capturo no volverse a Capturar para ese alumno -->
-                  <option selected>Eligir...</option>
-                  <option>Programacion Web</option>
-                  <option>Tesebada</option>
-                </select>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputNombre">Promedio</label>
-                <input type="number" class="form-control" id="Promedio" placeholder="#" min="10"
-                                                max="100" >
-              </div>
-              
-            </div>
-           
-            <div class="row justify-content-center">
-    <div class="row-4"></div>
-     <button class="btn btn-info btn-lg" type="submit">Agregar</button>
-         </form>    
-            <table class="table tale-striped" style="display: inline-block">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Materia</th>
-        <th>Promedio</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-    </tbody>
-</table>
 
+    <!-- Custom styles for this page -->
+    <link href="{% static 'simel/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
 
-</ul>
-
-   <div class="row justify-content-center">
-    <div class="row-4"></div>
-     <button class="btn btn-primary btn-lg" onclick=Alerta()>Guardar</button>
- </div>
-    <div class="row-4"></div>
-  </div>
-  <div class="row">
- 
-         
-  
-          <!-- Content Row -->
-          <div class="row">
-            <div class="col-lg-6 mb-4">
-
-            </div>
-          </div>
-
-        </div>
-        <!-- /.container-fluid -->
-
+<div class="container-fluid">
+    <!-- tabla de solicitudes -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Solicitudes de Movilidad</h6>
       </div>
-  {% endblock %}
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Numero de Control</th>
+                <th>Nombre</th>
+                <th>Carrera</th>
+                <th>Instituto</th>
+                <th>Fecha de Solicitud</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for t in solicitud %}
+              <tr>
+                <td class='clickable-row' data-href="{% url 'capturar_form' id=t.idsoli %}"> {{ t.numControl }}</td>
+                <td>{{ t.alumno }}</td>
+                <td>{{ t.carrera }}</td>
+                <td>{{ t.instituto }}</td>
+                <td>{{ t.fecha }}</td>
+                <td>{{ t.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'simel/js/demo/datatables-demo.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'simel/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'simel/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+{% endblock %}

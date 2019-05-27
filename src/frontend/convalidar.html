@@ -110,7 +110,7 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }}</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.first_name }} {{ user.last_name }}</span>
                 <img class="img-profile rounded-circle" src="{% static 'simel/img/user.png' %}">
               </a>
 
@@ -131,35 +131,44 @@
                     <!-- tabla de solicitudes -->
                     <div class="card shadow mb-4">
                       <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Solicitudes de Movilidad</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Materias del alumno - {{ instance.numeroControl.nombre }} {{ instance.numeroControl.apellido }}</h6>
                       </div>
                       <div class="card-body">
                         <div class="table-responsive">
                           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                               <tr>
-                                <th>Numero de Control</th>
-                                <th>Nombre</th>
+                                <th>Materia</th>
                                 <th>Carrera</th>
                                 <th>Instituto</th>
-                                <th>Fecha de Solicitud</th>
-                                <th>Status</th>
+                                <th>Creditos</th>
+                                <th>Validar</th>
                               </tr>
                             </thead>
                             <tbody>
-                              {% for t in solicitud %}
+                              {% for m in materias %}
                               <tr>
-                                <td class='clickable-row' data-href="{% url 'convalidar_form' id=t.idsoli %}"> {{ t.numControl }}</td>
-                                <td>{{ t.alumno }}</td>
-                                <td>{{ t.carrera }}</td>
-                                <td>{{ t.instituto }}</td>
-                                <td>{{ t.fecha }}</td>
-                                <td>{{ t.status }}</td>
+                                <td>{{ m.idMateria }}</td>
+                                <td>{{ m.idCarrera }}</td>
+                                <td>{{ m.idInstituto }}</td>
+                                <td>{{ m.idMateria.creditos }}</td>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                        <label class="form-check-label" for="defaultCheck1"> Validar
+                                        </label>
+                                      </div>
+                                </td>
                               </tr>
                               {% endfor %}
                             </tbody>
-          
-         
+                          <tfoot>
+                            <tr>
+                              <th>
+                              <button type="submit" class="btn btn-primary">Convalidar</button>
+                              </th>
+                              </tr>
+                          </tfoot>
                           </table>
                         </div>
                       </div>
