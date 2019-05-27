@@ -36,13 +36,15 @@ urlpatterns += [
 # Escolares
 urlpatterns += [
     path('capturas', views.capturarView, name='capturar_list'),
-    path('capturar/<int:id>/', views.capturaDetail, name='capturar_form')
+    path('capturar/<int:id>/', views.capturaDetail, name='capturar_form'),
+    path('subir', views.capturaCalificaciones, name='captura_calif')
 ]
 
 
 # Academia
 urlpatterns += [
-    path('convalidar', views.convalidarView, name='convalidar_list')
+    path('convalidar', views.convalidarView, name='convalidar_list'),
+    path('convalidar/materia', views.convalidarMateria, name='convalidar_form')
 ]
 
 

@@ -11,19 +11,17 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SIMEL - Solicitudes </title>
-
-  <!-- Custom fonts for this template -->
-  <link href="{% static 'simel/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
-  <link
-    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-    rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="{% static 'simel/css/simel.min.css' %}" rel="stylesheet">
-
-  <!-- Custom styles for this page -->
-  <link href="{% static 'simel/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    <!-- Custom fonts for this template -->
+    <link href="{% static 'simel/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet">
+  
+    <!-- Custom styles for this template -->
+    <link href="{% static 'simel/css/simel.min.css' %}" rel="stylesheet">
+  
+    <!-- Custom styles for this page -->
+    <link href="{% static 'simel/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
 
 </head>
 
@@ -46,10 +44,10 @@
       <hr class="sidebar-divider my-0">
 
       <li class="nav-item">
-          <a class="nav-link" href="{% url 'tablero' %}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Tablero</span></a>
-        </li>
+        <a class="nav-link" href="{% url 'tablero' %}">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Tablero</span></a>
+      </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item active">
@@ -127,49 +125,49 @@
           </ul>
 
         </nav>
-        <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-          <!-- tabla de solicitudes -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Solicitudes de Movilidad</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Numero de Control</th>
-                      <th>Nombre</th>
-                      <th>Carrera</th>
-                      <th>Instituto</th>
-                      <th>Fecha de Solicitud</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                      {% for i in solicitud %}
-                      <tr>
-                        <td class='clickable-row' data-href="{% url 'solicitud_detail' id=i.idsoli %}"> 
-                          {{ i.numControl }}</td>
-                        <td>{{ i.alumno }} </td>
-                        <td>{{ i.carrera }}</td>
-                        <td>{{ i.instituto }}</td>
-                        <td>{{ i.fecha }}</td>
-                        <td>{{ i.status }}</td>
-                      </tr>
-                  </tbody>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- tabla de solicitudes -->
+                    <div class="card shadow mb-4">
+                      <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Solicitudes de Movilidad</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                              <tr>
+                                <th>Numero de Control</th>
+                                <th>Nombre</th>
+                                <th>Carrera</th>
+                                <th>Instituto</th>
+                                <th>Fecha de Solicitud</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            {% if user.is_superuser %}
+                            <tbody>
+                              {% for t in solicitud %}
+                              <tr>
+                                <td><a href="{% url 'capturar_form' %}">ver</a></td>
+                                <td class='clickable-row' data-href="{% url 'solicitud_detail' id=t.idsoli %}"> {{ t.numControl }}</td>
+                                <td>{{ t.alumno }}</td>
+                                <td>{{ t.carrera }}</td>
+                                <td>{{ t.instituto }}</td>
+                                <td>{{ t.fecha }}</td>
+                                <td>{{ t.status }}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                            {% endif %}
+          
+         
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
@@ -224,25 +222,28 @@
   <script src="{% static 'simel/vendor/datatables/jquery.dataTables.min.js' %}"></script>
   <script src="{% static 'simel/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
   <script type="text/javascript">
-  $(document).ready(function($) {
-    $(".table-row").click(function() {
-       var x= (this.id);
-       console.log(x); 
-    })});
+    $(document).ready(function ($) {
+      $(".table-row").click(function () {
+        var x = (this.id);
+        console.log(x);
+      })
+    });
 
-    jQuery(document).ready(function($) {
-      $(".clickable-row").click(function() {
-          window.location = $(this).data("href");
+    jQuery(document).ready(function ($) {
+      $(".clickable-row").click(function () {
+        window.location = $(this).data("href");
       });
-  });
-
+    });
   </script>
-    <style type="text/css">
-    .table-row{
-      cursor:pointer;
-      }
-      tr:hover {background-color:#f5f5f5;}
-    </style>
+  <style type="text/css">
+    .table-row {
+      cursor: pointer;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
   <!-- Page level custom scripts -->
   <script src="{% static 'simel/js/demo/datatables-demo.js' %}"></script>
 

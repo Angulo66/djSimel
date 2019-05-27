@@ -58,6 +58,12 @@ def capturarView(request):
     }
     return render(request, template, context)
 
+def capturaCalificaciones(request):
+    template = 'capturar_form.html'
+    context = {
+
+    }
+    return render(request, template, context)
 
 def capturaDetail(request, id=None):
     template = 'capturar_form.html'
@@ -116,6 +122,13 @@ def solicitudEnviado(request):
     }
     return render(request, template, context)
 
+def convalidarMateria(request):
+    template = 'convalidar_form.html'
+    context = {
+
+    }
+    return render(request, template, context)
+
 def solicitudStatus(request):
     template = 'solicitud_status.html'
     context = {
@@ -125,7 +138,7 @@ def solicitudStatus(request):
 def tablero(request): 
     count_status_coord = obj.raw("SELECT 1 as id, COUNT(*) as total, "+
     "COUNT( case when st.status='Finalizado' then st.status end) as finalizado, "+
-    "COUNT( case when st.status='Acpetado' then st.status end) as aceptado, "+
+    "COUNT( case when st.status='Aceptado' then st.status end) as aceptado, "+
     "COUNT( case when st.status='Enviado' then st.status end) as enviado, "+
     "COUNT( case when st.status='Rechazado' then st.status end) as rechazado, "+
     "COUNT( case when st.status='Pendiente' then st.status end) as pendiente FROM auth_user au "+
