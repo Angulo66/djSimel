@@ -126,6 +126,7 @@
 
         </nav>
 
+        {% block content %}
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- tabla de solicitudes -->
@@ -146,12 +147,10 @@
                                 <th>Status</th>
                               </tr>
                             </thead>
-                            {% if user.is_superuser %}
                             <tbody>
                               {% for t in solicitud %}
                               <tr>
-                                <td><a href="{% url 'capturar_form' %}">ver</a></td>
-                                <td class='clickable-row' data-href="{% url 'solicitud_detail' id=t.idsoli %}"> {{ t.numControl }}</td>
+                                <td class='clickable-row' data-href="{% url 'capturar_form' id=t.idsoli %}"> {{ t.numControl }}</td>
                                 <td>{{ t.alumno }}</td>
                                 <td>{{ t.carrera }}</td>
                                 <td>{{ t.instituto }}</td>
@@ -160,15 +159,14 @@
                               </tr>
                               {% endfor %}
                             </tbody>
-                            {% endif %}
-          
+       
          
                           </table>
                         </div>
                       </div>
                     </div>
                   </div>
-
+                  {% endblock %}   
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">

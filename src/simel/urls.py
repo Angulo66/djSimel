@@ -30,7 +30,7 @@ urlpatterns += [
 urlpatterns += [
     path('materia', views.MateriaSolicitadaListView.as_view(), name='materia_changelist'),
     path('materia/add', views.MateriaSolicitdadCreateView, name='materia_add'),
-    path('materia/<int:pk>', views.MateriaSolicitdadUpdateView.as_view(), name='materia_change')
+    path('materia/<int:pk>/', views.MateriaSolicitdadUpdateView.as_view(), name='materia_change')
 ]
 
 # Escolares
@@ -44,7 +44,7 @@ urlpatterns += [
 # Academia
 urlpatterns += [
     path('convalidar', views.convalidarView, name='convalidar_list'),
-    path('convalidar/materia', views.convalidarMateria, name='convalidar_form')
+    path('convalidar/<int:id>/', views.convalidarMateria, name='convalidar_form')
 ]
 
 

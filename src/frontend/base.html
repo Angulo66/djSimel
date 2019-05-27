@@ -103,6 +103,7 @@
           <i class="fas fa-fw fa-table"></i>
           <span>Crear Solicitud</span></a>
       </li>
+
       <li class="nav-item">
           <a class="nav-link" href="">
             <i class="fas fa-fw fa-table"></i>
@@ -569,8 +570,8 @@
                 <h3 class="cover-heading">Bienvenido<strong> {{ user.first_name }} {{ user.last_name }} </strong> </br> al sistema de movilidad integrado
                   del Instituto Tecnologico de Culiacan.
                 </h3>
-                <p class="lead"> Correo electronico del webmaster: <a>simelmaster@itculiacan.edu.mx </a></p>
-                <p class="lead">
+                <p class="lead"> Correo electronico del webmaster: <a href="mailto:" >simelmaster@itculiacan.edu.mx </a></p>
+                <p class="lead"> Correo electronico del   DBA: <a href="mailto:">dbaitc@itculiacan.edu.mx </a></p>
                   <a href="{% url 'solicitud' %}" class="btn btn-lg btn-secondary">Crea tu Primer Solicitud</a>
                 </p>
               </main>

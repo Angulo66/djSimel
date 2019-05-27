@@ -122,12 +122,14 @@ def solicitudEnviado(request):
     }
     return render(request, template, context)
 
-def convalidarMateria(request):
-    template = 'convalidar_form.html'
+def convalidarMateria(request, id=None):
+    instance = get_object_or_404(Solicitud, id=id)
+    template = 'convalidar.html'
     context = {
-
+        "title": instance.numeroControl,
+        "instance": instance
     }
-    return render(request, template, context)
+    return render(request, template , context)
 
 def solicitudStatus(request):
     template = 'solicitud_status.html'
